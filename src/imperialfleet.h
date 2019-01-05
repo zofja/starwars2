@@ -10,7 +10,7 @@ protected:
 
 public:
     AttackPower getAttackPower();
-    bool isImperial();
+    bool isImperial() override;
     void attackRebelShip(RebelStarship &attackedShip);
 
 protected:

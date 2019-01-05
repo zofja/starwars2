@@ -18,7 +18,7 @@ public:
     virtual bool isImperial() = 0;
 
 protected:
-    Ship(ShieldPoints shield);
+    explicit Ship(ShieldPoints shield);
 };
 
 class RebelStarship : public Ship {
