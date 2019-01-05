@@ -9,24 +9,27 @@ class Ship {
 
 protected:
     ShieldPoints shield;
-    Speed speed;
 
 public:
     ShieldPoints getShield();
-    Speed getSpeed();
     void takeDamage(AttackPower damage);
+    bool isDestroyed();
 
-    virtual bool isArmed() = 0;
     virtual bool isImperial() = 0;
 
 protected:
-    Ship(ShieldPoints shield, Speed speed);
+    Ship(ShieldPoints shield);
 };
 
 class RebelStarship : public Ship {
 
+protected:
+    Speed speed;
+
 public:
+    Speed getSpeed();
     bool isImperial() override;
+    virtual bool isArmed() = 0;
 
 protected:
     RebelStarship(ShieldPoints shield, Speed speed);

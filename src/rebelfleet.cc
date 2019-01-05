@@ -6,22 +6,25 @@ ShieldPoints Ship::getShield() {
     return this->shield;
 }
 
-Speed Ship::getSpeed() {
-    return this->speed;
-}
-
 void Ship::takeDamage(AttackPower damage) {
     this->shield = damage > this->shield ? 0 : this->shield - damage;
 }
 
-Ship::Ship(ShieldPoints shield, Speed speed) : shield(shield), speed(speed) {}
+bool Ship::isDestroyed() {
+    return this->shield == 0;
+}
 
+Ship::Ship(ShieldPoints shield) : shield(shield) {}
+
+Speed RebelStarship::getSpeed() {
+    return this->speed;
+}
 
 bool RebelStarship::isImperial() {
     return false;
 }
 
-RebelStarship::RebelStarship(ShieldPoints shield, Speed speed) : Ship(shield, speed) {}
+RebelStarship::RebelStarship(ShieldPoints shield, Speed speed) : Ship(shield), speed(speed) {}
 
 bool BasicRebelStarship::isArmed() {
     return false;
