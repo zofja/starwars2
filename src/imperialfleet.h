@@ -1,6 +1,8 @@
 #ifndef STARWARS2_IMPERIALFLEET_H
 #define STARWARS2_IMPERIALFLEET_H
 
+#include <initializer_list>
+#include <vector>
 #include "rebelfleet.h"
 
 class ImperialStarship : public Ship {
@@ -10,8 +12,10 @@ protected:
 
 public:
     AttackPower getAttackPower();
+
     bool isImperial() override;
-    void attackRebelShip(RebelStarship &attackedShip);
+
+    void attackRebelShip(RebelStarship *attackedShip);
 
 protected:
     ImperialStarship(ShieldPoints shield, AttackPower attack);
@@ -35,10 +39,33 @@ public:
     TIEFighter(ShieldPoints shield, AttackPower attack);
 };
 
-DeathStar createDeathStar(ShieldPoints shield, AttackPower attack);
+class Squadron {
 
-ImperialDestroyer createImperialDestroyer(ShieldPoints shield, AttackPower attack);
+public:
 
-TIEFighter createTIEFighter(ShieldPoints shield, AttackPower attack);
+    Squadron(std::initializer_list<ImperialStarship*> ships);
+
+    ShieldPoints getShield();
+
+    AttackPower getAttackPower();
+
+    void takeDamage(AttackPower damage);
+
+    std::vector<ImperialStarship*> &getShips();
+
+
+private:
+
+    std::vector<ImperialStarship*> ships;
+
+};
+
+DeathStar *createDeathStar(ShieldPoints shield, AttackPower attack);
+
+ImperialDestroyer *createImperialDestroyer(ShieldPoints shield, AttackPower attack);
+
+TIEFighter *createTIEFighter(ShieldPoints shield, AttackPower attack);
+
+Squadron *createSquadron(std::initializer_list<ImperialStarship*> ships);
 
 #endif //STARWARS2_IMPERIALFLEET_H

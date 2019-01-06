@@ -40,13 +40,16 @@ bool ArmedRebelStarship::isArmed() {
     return true;
 }
 
-ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : RebelStarship(shield, speed), attack(attack) {}
+ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : RebelStarship(shield,
+                                                                                                             speed),
+                                                                                               attack(attack) {}
 
 Explorer::Explorer(ShieldPoints shield, Speed speed) : BasicRebelStarship(shield, speed) {
     assert(299796 <= speed && speed <= 2997960);
 }
 
-StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed, attack) {
+StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed,
+                                                                                                    attack) {
     assert(99999 <= speed && speed <= 299795);
 }
 
@@ -54,14 +57,14 @@ XWing::XWing(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelS
     assert(299796 <= speed && speed <= 2997960);
 }
 
-Explorer createExplorer(ShieldPoints shield, Speed speed) {
-    return Explorer(shield, speed);
+Explorer *createExplorer(ShieldPoints shield, Speed speed) {
+    return new Explorer(shield, speed);
 }
 
-StarCruiser createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) {
-    return StarCruiser(shield, speed, attack);
+StarCruiser *createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) {
+    return new StarCruiser(shield, speed, attack);
 }
 
-XWing createXWing(ShieldPoints shield, Speed speed, AttackPower attack) {
-    return XWing(shield, speed, attack);
+XWing *createXWing(ShieldPoints shield, Speed speed, AttackPower attack) {
+    return new XWing(shield, speed, attack);
 }
