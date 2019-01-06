@@ -43,7 +43,7 @@ class Squadron {
 
 public:
 
-    Squadron(std::initializer_list<ImperialStarship*> ships);
+    Squadron(std::initializer_list<ImperialStarship *> ships);
 
     ShieldPoints getShield();
 
@@ -51,12 +51,11 @@ public:
 
     void takeDamage(AttackPower damage);
 
-    std::vector<ImperialStarship*> &getShips();
-
+    std::vector<ImperialStarship *> &getShips();
 
 private:
 
-    std::vector<ImperialStarship*> ships;
+    std::vector<ImperialStarship *> ships;
 
 };
 
@@ -66,6 +65,6 @@ ImperialDestroyer *createImperialDestroyer(ShieldPoints shield, AttackPower atta
 
 TIEFighter *createTIEFighter(ShieldPoints shield, AttackPower attack);
 
-Squadron *createSquadron(std::initializer_list<ImperialStarship*> ships);
+Squadron *createSquadron(std::initializer_list<ImperialStarship *> ships);
 
 #endif //STARWARS2_IMPERIALFLEET_H

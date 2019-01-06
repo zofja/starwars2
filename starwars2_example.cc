@@ -1,7 +1,8 @@
 #include <cassert>
-#include "imperialfleet.h"
-#include "rebelfleet.h"
-#include "battle.h"
+#include <iostream>
+#include "src/imperialfleet.h"
+#include "src/rebelfleet.h"
+#include "src/battle.h"
 
 int main() {
     auto xwing = createXWing(100, 300000, 50);

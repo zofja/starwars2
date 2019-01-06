@@ -5,22 +5,14 @@
 #include "rebelfleet.h"
 #include "imperialfleet.h"
 
-/*
- *     auto battle = SpaceBattle::Builder()
-        .ship(squadron)
-        .startTime(2)
-        .maxTime(23)
-        .ship(xwing)
-        .ship(explorer)
-        .build();
- */
 typedef int Time;
 
 class SpaceBattle {
 
 public:
 
-    SpaceBattle(std::vector<ImperialStarship *> imperials, std::vector<RebelStarship *> rebels, Time t0, Time t1);
+    SpaceBattle(std::vector<ImperialStarship *> imperials, std::vector<RebelStarship *> rebels, Time t0, Time t1,
+                std::vector<Time> igTime);
 
     size_t countImperialFleet();
 
@@ -47,8 +39,9 @@ public:
 
     private:
 
-        std::vector<RebelStarship *> rebels;
         std::vector<ImperialStarship *> imperials;
+        std::vector<RebelStarship *> rebels;
+        std::vector<Time> intergalacticTime;
         Time t0;
         Time t1;
 
@@ -56,10 +49,15 @@ public:
 
 private:
 
-    std::vector<RebelStarship *> rebels;
     std::vector<ImperialStarship *> imperials;
-    Time t0;
+    std::vector<RebelStarship *> rebels;
+    Time time;
     Time t1;
+    std::vector<Time> intergalacticTime;
+    size_t imperialFleet;
+    size_t rebelFleet;
+
+    void imperialAttack();
 };
 
 #endif //STARWARS2_BATTLE_H

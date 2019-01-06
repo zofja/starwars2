@@ -15,7 +15,7 @@ void ImperialStarship::attackRebelShip(RebelStarship *attackedShip) {
     attackedShip->takeDamage(this->getAttackPower());
 
     if (attackedShip->isArmed())
-        this->takeDamage(dynamic_cast<ArmedRebelStarship*>(attackedShip)->getAttackPower());
+        this->takeDamage(dynamic_cast<ArmedRebelStarship *>(attackedShip)->getAttackPower());
 }
 
 ImperialStarship::ImperialStarship(ShieldPoints shield, AttackPower attack) : Ship(shield), attack(attack) {}
@@ -38,11 +38,11 @@ TIEFighter *createTIEFighter(ShieldPoints shield, AttackPower attack) {
     return new TIEFighter(shield, attack);
 }
 
-Squadron *createSquadron(std::initializer_list<ImperialStarship*> ships) {
+Squadron *createSquadron(std::initializer_list<ImperialStarship *> ships) {
     return new Squadron(ships);
 }
 
-Squadron::Squadron(std::initializer_list<ImperialStarship*> ships) : ships(ships) {}
+Squadron::Squadron(std::initializer_list<ImperialStarship *> ships) : ships(ships) {}
 
 ShieldPoints Squadron::getShield() {
     return std::accumulate(ships.begin(), ships.end(), 0, [](ShieldPoints sum, ImperialStarship *s) {
@@ -56,12 +56,12 @@ AttackPower Squadron::getAttackPower() {
     });
 }
 
-std::vector<ImperialStarship*> &Squadron::getShips() {
+std::vector<ImperialStarship *> &Squadron::getShips() {
     return this->ships;
 }
 
 void Squadron::takeDamage(AttackPower damage) {
-    for (auto s : ships) {
+    for (auto &s : ships) {
         s->takeDamage(damage);
     }
 }
