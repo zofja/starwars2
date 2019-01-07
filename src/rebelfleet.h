@@ -1,6 +1,7 @@
 #ifndef STARWARS2_REBELFLEET_H
 #define STARWARS2_REBELFLEET_H
 
+#include <memory>
 #include "helper.h"
 
 class RebelStarship : public BasicShip {
@@ -9,6 +10,8 @@ protected:
     Speed speed;
 
 public:
+
+    virtual void causeDamage(const std::shared_ptr<Ship> &imperial);
 
     Speed getSpeed();
 
@@ -25,6 +28,8 @@ class ArmedRebelStarship : public RebelStarship, public ArmedShip {
 public:
 
     bool isArmed() override;
+
+    void causeDamage(const std::shared_ptr<Ship> &imperial) override;
 
 protected:
 
@@ -54,10 +59,10 @@ public:
 };
 
 // funkcje fabrykujące
-Explorer *createExplorer(ShieldPoints shield, Speed speed);
+std::shared_ptr<Explorer> createExplorer(ShieldPoints shield, Speed speed);
 
-StarCruiser *createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);
+std::shared_ptr<StarCruiser> createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);
 
-XWing *createXWing(ShieldPoints shield, Speed speed, AttackPower attack);
+std::shared_ptr<XWing> createXWing(ShieldPoints shield, Speed speed, AttackPower attack);
 
 #endif //STARWARS2_REBELFLEET_H

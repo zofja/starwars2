@@ -1,6 +1,8 @@
 #ifndef STARWARS2_HELPER_H
 #define STARWARS2_HELPER_H
 
+#include <memory>
+
 typedef int ShieldPoints;
 typedef int Speed;
 typedef int AttackPower;
@@ -29,7 +31,7 @@ protected:
 };
 
 // Abstract virtual class
-class BasicShip : public Ship {
+class BasicShip : public virtual Ship {
 
 public:
 
@@ -48,11 +50,11 @@ public:
 
 
 // Abstract virtual class
-class ArmedShipUnit : public Ship {
+class ArmedShipUnit : public virtual Ship {
 
 public:
 
-    virtual AttackPower getAttackPower();
+    virtual AttackPower getAttackPower() = 0;
 
 protected:
 
@@ -79,11 +81,12 @@ class ImperialUnit : public virtual ArmedShipUnit {
 
 public:
 
+    explicit ImperialUnit() = default;
+    explicit ImperialUnit(ShieldPoints shield, AttackPower attack);
+
     bool isImperial() override;
 
 protected:
-
-    explicit ImperialUnit(ShieldPoints shield, AttackPower attack);
 
 };
 

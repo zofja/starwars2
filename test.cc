@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include <bits/stdc++.h>
+#include "src/helper.h"
 #include "src/rebelfleet.h"
 #include "src/imperialfleet.h"
 #include "src/battle.h"
@@ -15,6 +16,8 @@ int main() {
     auto fighter = createTIEFighter(50, 9);
     auto destroyer = createImperialDestroyer(150, 20);
 
+
+//    /*
     cout << "XWing: " << endl;
     cout << ">shield: " << xwing->getShield() << endl;
     cout << ">speed: " << xwing->getSpeed() << endl;
@@ -71,6 +74,7 @@ int main() {
     cout << "ImperialDestroyer shield: " << destroyer->getShield() << endl;
     cout << endl;
 
+    /*
     deathStar->attackRebelShip(xwing);
     fighter->attackRebelShip(cruiser);
     destroyer->attackRebelShip(explorer);
@@ -102,16 +106,18 @@ int main() {
     cout << "TIEFighter isDestroyed: " << fighter->isDestroyed() << endl;
     cout << "ImperialDestroyer isDestroyed: " << destroyer->isDestroyed() << endl;
     cout << endl;
+    */
 
-    // nowe testy
+    auto battle = SpaceBattle::Builder().ship(deathStar).ship(xwing).startTime(0).maxTime(3).build();
 
-    auto squadron = createSquadron({deathStar, fighter});
-    cout << "Squadron: " << endl;
-    cout << ">shield: " << squadron->getShield() << endl;
-    cout << ">attack: " << squadron->getAttackPower() << endl;
-    cout << endl;
-
-//    auto battle = SpaceBattle::Builder().ship(deathStar).ship(xwing);
+    battle.printShips();
+    battle.tick(2);
+    battle.printShips();
+    battle.tick(1);
+    battle.printShips();
+    battle.tick(1);
+    battle.printShips();
+    battle.tick(1);
 
 }
 

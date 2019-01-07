@@ -11,7 +11,7 @@ class SpaceBattle {
 
 public:
 
-    SpaceBattle(std::vector<ImperialStarship *> imperials, std::vector<RebelStarship *> rebels, Time t0, Time t1,
+    SpaceBattle(std::vector<std::shared_ptr<Ship>> ships, Time t0, Time t1,
                 std::vector<Time> igTime);
 
     size_t countImperialFleet();
@@ -20,15 +20,19 @@ public:
 
     void tick(Time timeStep);
 
+    void printShips() {
+        for (auto &ship : ships) {
+            std::cout << ship->getShield() << "\n";
+        }
+    };
+
     class Builder {
 
     public:
 
         Builder();
 
-        Builder &ship(Ship *s);
-
-        Builder &ship(Squadron *s);
+        Builder &ship(std::shared_ptr<Ship> s);
 
         Builder &startTime(Time t);
 
@@ -39,8 +43,7 @@ public:
 
     private:
 
-        std::vector<ImperialStarship *> imperials;
-        std::vector<RebelStarship *> rebels;
+        std::vector<std::shared_ptr<Ship>> ships;
         std::vector<Time> intergalacticTime;
         Time t0;
         Time t1;
@@ -49,15 +52,16 @@ public:
 
 private:
 
-    std::vector<ImperialStarship *> imperials;
-    std::vector<RebelStarship *> rebels;
+    std::vector<std::shared_ptr<Ship>> ships;
     Time time;
     Time t1;
     std::vector<Time> intergalacticTime;
-    size_t imperialFleet;
-    size_t rebelFleet;
+    size_t imperialFleet = 0;
+    size_t rebelFleet = 0;
 
     void imperialAttack();
 };
+
+void attack(std::shared_ptr<ImperialUnit> imperial, std::shared_ptr<RebelStarship> rebel);
 
 #endif //STARWARS2_BATTLE_H

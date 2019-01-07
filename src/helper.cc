@@ -23,10 +23,6 @@ AttackPower ArmedShip::getAttackPower() {
 
 ArmedShipUnit::ArmedShipUnit(ShieldPoints shield, AttackPower attack) : Ship(shield), attack(attack) {}
 
-AttackPower ArmedShipUnit::getAttackPower() {
-    return this->attack;
-}
-
 ArmedShip::ArmedShip(ShieldPoints shield, AttackPower attack) : ArmedShipUnit(shield, attack) {}
 
 ImperialUnit::ImperialUnit(ShieldPoints shield, AttackPower attack) : ArmedShipUnit(shield, attack) {}

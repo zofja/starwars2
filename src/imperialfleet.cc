@@ -2,71 +2,72 @@
 #include <numeric>
 #include "imperialfleet.h"
 
-void ImperialStarship::attackRebelShip(RebelStarship *attackedShip) {
-
-    auto armedThis = dynamic_cast<ArmedShip *>(this);
-    attackedShip->takeDamage(armedThis->getAttackPower());
-
-    if (attackedShip->isArmed()) {
-        armedThis->takeDamage(dynamic_cast<ArmedRebelStarship *>(attackedShip)->getAttackPower());
-    }
-}
-
-ImperialStarship::ImperialStarship(ShieldPoints shield, AttackPower attack) : BasicShip(shield),
+ImperialStarship::ImperialStarship(ShieldPoints shield, AttackPower attack) : Ship(shield),
+                                                                              ArmedShipUnit(shield, attack),
+                                                                              BasicShip(shield),
                                                                               ArmedShip(shield, attack),
                                                                               ImperialUnit(shield, attack) {}
 
 bool ImperialStarship::isDestroyed() {
-    // TODO
-    return dynamic_cast<BasicShip*>(this)->getShield() == 0;
+    return dynamic_cast<BasicShip *>(this)->getShield() == 0;
 }
 
-DeathStar::DeathStar(ShieldPoints shield, AttackPower attack) : ImperialStarship(shield, attack) {}
+DeathStar::DeathStar(ShieldPoints shield, AttackPower attack) : Ship(shield), ArmedShipUnit(shield, attack),
+                                                                ImperialStarship(shield, attack) {}
 
-ImperialDestroyer::ImperialDestroyer(ShieldPoints shield, AttackPower attack) : ImperialStarship(shield, attack) {}
+ImperialDestroyer::ImperialDestroyer(ShieldPoints shield, AttackPower attack) : Ship(shield),
+                                                                                ArmedShipUnit(shield, attack),
+                                                                                ImperialStarship(shield, attack) {}
 
-TIEFighter::TIEFighter(ShieldPoints shield, AttackPower attack) : ImperialStarship(shield, attack) {}
+TIEFighter::TIEFighter(ShieldPoints shield, AttackPower attack) : Ship(shield), ArmedShipUnit(shield, attack),
+                                                                  ImperialStarship(shield, attack) {}
 
-// TODO
-DeathStar *createDeathStar(ShieldPoints shield, AttackPower attack) {
-    return new DeathStar(shield, attack);
-}
+/*
+Squadron::Squadron(std::initializer_list<ImperialUnit> ships) : ImperialUnit(), ships(ships) {}
 
-ImperialDestroyer *createImperialDestroyer(ShieldPoints shield, AttackPower attack) {
-    return new ImperialDestroyer(shield, attack);
-}
-
-TIEFighter *createTIEFighter(ShieldPoints shield, AttackPower attack) {
-    return new TIEFighter(shield, attack);
-}
-
-Squadron *createSquadron(std::initializer_list<ImperialUnit *> ships) {
-    return new Squadron(ships);
-}
-
-// TODO jak wywołać konstruktor ImperialUnit ???
-Squadron::Squadron(std::initializer_list<ImperialUnit *> ships) : ships(ships) {}
-
-Squadron::Squadron(std::vector<ImperialUnit *> ships) {}
+Squadron::Squadron(std::vector<ImperialUnit> ships) {}
 
 ShieldPoints Squadron::getShield() {
-    return std::accumulate(ships.begin(), ships.end(), 0, [](ShieldPoints sum, ImperialUnit *s) {
-        return sum += !s->isDestroyed() ? s->getShield() : 0;
+    return std::accumulate(ships.begin(), ships.end(), 0, [](ShieldPoints sum, ImperialUnit &s) {
+        return sum += !s.isDestroyed() ? s.getShield() : 0;
     });
 }
 
 AttackPower Squadron::getAttackPower() {
-    return std::accumulate(ships.begin(), ships.end(), 0, [](AttackPower sum, ImperialUnit *s) {
-        return sum += !s->isDestroyed() ? s->getAttackPower() : 0;
+    return std::accumulate(ships.begin(), ships.end(), 0, [](AttackPower sum, ImperialUnit &s) {
+        return sum += !s.isDestroyed() ? s.getAttackPower() : 0;
     });
 }
 
-std::vector<ImperialUnit *> &Squadron::getShips() {
+std::vector<ImperialUnit> &Squadron::getShips() {
     return this->ships;
 }
 
 void Squadron::takeDamage(AttackPower damage) {
-    for (auto s : ships) {
-        s->takeDamage(damage);
+    for (auto &s : ships) {
+        s.takeDamage(damage);
     }
 }
+ */
+
+std::shared_ptr<DeathStar> createDeathStar(ShieldPoints shield, AttackPower attack) {
+    return std::make_shared<DeathStar>(shield, attack);
+}
+
+std::shared_ptr<ImperialDestroyer> createImperialDestroyer(ShieldPoints shield, AttackPower attack) {
+    return std::make_shared<ImperialDestroyer>(shield, attack);
+}
+
+std::shared_ptr<TIEFighter> createTIEFighter(ShieldPoints shield, AttackPower attack) {
+    return std::make_shared<TIEFighter>(shield, attack);
+}
+
+/*
+std::shared_ptr<Squadron> createSquadron(std::initializer_list<ImperialUnit> ships) {
+    return std::make_shared<Squadron>(ships);
+}
+
+std::shared_ptr<Squadron> createSquadron(std::vector<ImperialUnit> ships) {
+    return std::make_shared<Squadron>(ships);
+}
+*/

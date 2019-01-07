@@ -1,27 +1,23 @@
+#include <utility>
+
+#include <utility>
+
 #include <algorithm>
 #include <array>
 #include <iostream>
 #include "battle.h"
 
+void attack(const std::shared_ptr<Ship> &imperial, const std::shared_ptr<Ship> &rebel) {
+    std::cout << "attack\n";
+    rebel->takeDamage(dynamic_cast<ImperialUnit*>(imperial.get())->getAttackPower());
+    dynamic_cast<RebelStarship*>(rebel.get())->causeDamage(imperial);
+}
 
 SpaceBattle::Builder::Builder() = default;
 
-SpaceBattle::Builder &SpaceBattle::Builder::ship(Ship *s) {
+SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<Ship> s) {
 
-    auto *imperial = dynamic_cast<ImperialStarship *>(s);
-    if (imperial) {
-        imperials.emplace_back(imperial);
-    } else {
-        auto *rebel = dynamic_cast<RebelStarship *>(s);
-        if (rebel) {
-            rebels.emplace_back(rebel);
-        }
-    }
-    return *this;
-}
-
-SpaceBattle::Builder &SpaceBattle::Builder::ship(Squadron *s) {
-    imperials.insert(imperials.end(), s->getShips().begin(), s->getShips().end());
+    ships.emplace_back(s);
     return *this;
 }
 
@@ -41,16 +37,30 @@ SpaceBattle::Builder &SpaceBattle::Builder::maxTime(Time t) {
 }
 
 SpaceBattle SpaceBattle::Builder::build() {
-    return SpaceBattle(imperials, rebels, t0, t1, intergalacticTime);
+    return SpaceBattle(ships, t0, t1, intergalacticTime);
 }
 
 
-SpaceBattle::SpaceBattle(std::vector<ImperialStarship *> imperials, std::vector<RebelStarship *> rebels, Time t0,
-                         Time t1, std::vector<Time> igTime) : imperials(std::move(imperials)),
-                                                              rebels(std::move(rebels)), time(t0), t1(t1),
+SpaceBattle::SpaceBattle(std::vector<std::shared_ptr<Ship>> ships, Time t0,
+                         Time t1, std::vector<Time> igTime) : ships(std::move(ships)),
+                                                              time(t0), t1(t1),
                                                               intergalacticTime(std::move(igTime)) {
-    this->imperialFleet = this->imperials.size();
-    this->rebelFleet = this->rebels.size();
+
+    std::cout << "intergalactic time: ";
+    for (auto i : this->intergalacticTime) {
+        std::cout << i << " ";
+    }
+    std::cout << "\n";
+    std::cout << "space battle ctor\n";
+    for (auto &s : this->ships) {
+        std::cout << s->getShield() << "\n";
+        if (s->isImperial()) {
+            this->imperialFleet++;
+        } else {
+            this->rebelFleet++;
+        }
+    }
+    std::cout << this->imperialFleet << " " << this->rebelFleet << "\n";
 }
 
 size_t SpaceBattle::countImperialFleet() {
@@ -63,6 +73,8 @@ size_t SpaceBattle::countRebelFleet() {
 
 void SpaceBattle::tick(Time timeStep) {
 
+    std::cout << "tick\n";
+    std::cout << countImperialFleet() << " " << countRebelFleet() << "\n";
     if (countImperialFleet() == 0 && countRebelFleet() == 0) {
         std::cout << "DRAW\n";
     } else if (countRebelFleet() == 0) {
@@ -71,6 +83,7 @@ void SpaceBattle::tick(Time timeStep) {
         std::cout << "REBELLION WON\n";
     } else {
         if (std::binary_search(intergalacticTime.begin(), intergalacticTime.end(), time)) {
+            std::cout << "imperial attack\n";
             imperialAttack();
         }
     }
@@ -80,12 +93,17 @@ void SpaceBattle::tick(Time timeStep) {
 }
 
 void SpaceBattle::imperialAttack() {
-    for (auto &imperial : imperials) {
-        for (auto &rebel : rebels) {
-            if (!imperial->isDestroyed() && !rebel->isDestroyed()) {
-                imperial->attackRebelShip(rebel);
-                if (imperial->isDestroyed()) imperialFleet--;
-                if (rebel->isDestroyed()) rebelFleet--;
+
+    for (auto &imperial : ships) {
+        if (imperial->isImperial()) {
+            for (auto &rebel : ships) {
+                if (!rebel->isImperial()) {
+                    if (!imperial->isDestroyed() && !rebel->isDestroyed()) {
+                        attack(imperial, rebel);
+                        if (imperial->isDestroyed()) imperialFleet--;
+                        if (rebel->isDestroyed()) rebelFleet--;
+                    }
+                }
             }
         }
     }
