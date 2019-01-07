@@ -38,3 +38,15 @@ int main() {
 
     battle.tick(1); // Wypisuje "IMPERIUM WON\n".
 }
+
+
+//#include <cassert>
+//#include "src/imperialfleet.h"
+//#include "src/rebelfleet.h"
+//#include "src/battle.h"
+//
+//int main() {
+//    auto deathStar = createDeathStar(10000, 75);
+//    auto fighter = createTIEFighter(50, 9);
+//    auto squadron = createSquadron(std::vector{deathStar, fighter});
+//}

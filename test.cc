@@ -111,7 +111,7 @@ int main() {
     cout << ">attack: " << squadron->getAttackPower() << endl;
     cout << endl;
 
-    auto battle = SpaceBattle::Builder().ship(deathStar).ship(xwing);
+//    auto battle = SpaceBattle::Builder().ship(deathStar).ship(xwing);
 
 }
 

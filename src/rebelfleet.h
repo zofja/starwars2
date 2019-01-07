@@ -1,36 +1,15 @@
 #ifndef STARWARS2_REBELFLEET_H
 #define STARWARS2_REBELFLEET_H
 
-typedef int ShieldPoints;
-typedef int Speed;
-typedef int AttackPower;
+#include "helper.h"
 
-
-class Ship {
-
-protected:
-    ShieldPoints shield;
-
-public:
-
-    ShieldPoints getShield();
-
-    void takeDamage(AttackPower damage);
-
-    bool isDestroyed();
-
-    virtual bool isImperial() = 0;
-
-protected:
-    explicit Ship(ShieldPoints shield);
-};
-
-class RebelStarship : public Ship {
+class RebelStarship : public BasicShip {
 
 protected:
     Speed speed;
 
 public:
+
     Speed getSpeed();
 
     bool isImperial() override;
@@ -41,39 +20,31 @@ protected:
     RebelStarship(ShieldPoints shield, Speed speed);
 };
 
-class ArmedRebelStarship : public RebelStarship {
-
-protected:
-    AttackPower attack;
+class ArmedRebelStarship : public RebelStarship, public ArmedShip {
 
 public:
-    AttackPower getAttackPower();
 
     bool isArmed() override;
 
 protected:
+
     ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack);
 };
 
-class BasicRebelStarship : public RebelStarship {
 
-public:
-    bool isArmed() override;
-
-protected:
-    BasicRebelStarship(ShieldPoints shield, Speed speed);
-};
-
-class Explorer : public BasicRebelStarship {
+class Explorer : public RebelStarship {
 
 public:
     Explorer(ShieldPoints shield, Speed speed);
+
+    bool isArmed() override;
 };
 
 class StarCruiser : public ArmedRebelStarship {
 
 public:
     StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);
+
 };
 
 class XWing : public ArmedRebelStarship {
@@ -82,6 +53,7 @@ public:
     XWing(ShieldPoints shield, Speed speed, AttackPower attack);
 };
 
+// funkcje fabrykujące
 Explorer *createExplorer(ShieldPoints shield, Speed speed);
 
 StarCruiser *createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);

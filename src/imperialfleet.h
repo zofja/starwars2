@@ -3,21 +3,19 @@
 
 #include <initializer_list>
 #include <vector>
+#include "helper.h"
 #include "rebelfleet.h"
 
-class ImperialStarship : public Ship {
-
-protected:
-    AttackPower attack;
+class ImperialStarship : public BasicShip, public ArmedShip, public ImperialUnit {
 
 public:
-    AttackPower getAttackPower();
 
-    bool isImperial() override;
+    bool isDestroyed() override;
 
     void attackRebelShip(RebelStarship *attackedShip);
 
 protected:
+
     ImperialStarship(ShieldPoints shield, AttackPower attack);
 };
 
@@ -39,26 +37,31 @@ public:
     TIEFighter(ShieldPoints shield, AttackPower attack);
 };
 
-class Squadron {
+
+class Squadron : public ImperialUnit {
 
 public:
 
-    Squadron(std::initializer_list<ImperialStarship *> ships);
+    // TODO czy ma przyjmować ImperialUnity?
+    Squadron(std::initializer_list<ImperialUnit*> ships);
 
-    ShieldPoints getShield();
+    Squadron(std::vector<ImperialUnit *> ships);
 
-    AttackPower getAttackPower();
+    ShieldPoints getShield() override;
 
-    void takeDamage(AttackPower damage);
+    AttackPower getAttackPower() override;
 
-    std::vector<ImperialStarship *> &getShips();
+    void takeDamage(AttackPower damage) override;
+
+    std::vector<ImperialUnit *> &getShips();
 
 private:
 
-    std::vector<ImperialStarship *> ships;
+    std::vector<ImperialUnit *> ships;
 
 };
 
+// funkcje fabrykujące
 DeathStar *createDeathStar(ShieldPoints shield, AttackPower attack);
 
 ImperialDestroyer *createImperialDestroyer(ShieldPoints shield, AttackPower attack);
