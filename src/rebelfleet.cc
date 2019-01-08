@@ -16,8 +16,10 @@ bool RebelStarship::isImperial() {
 // TODO no głupie to przyznaję
 void RebelStarship::causeDamage(const std::shared_ptr<Ship> &imperial) {}
 
-ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack)
-        : Ship(shield), ArmedShipUnit(shield, attack), RebelStarship(shield, speed), ArmedShip(shield, attack) {}
+ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : Ship(shield),
+                                                                                               ArmedShipUnit(shield, attack),
+                                                                                               RebelStarship(shield, speed),
+                                                                                               ArmedShip(shield, attack) {}
 
 bool ArmedRebelStarship::isArmed() {
     return true;
@@ -35,24 +37,26 @@ bool Explorer::isArmed() {
     return false;
 }
 
-StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack)
-        : Ship(shield), ArmedShipUnit(shield, attack), ArmedRebelStarship(shield, speed, attack) {
+StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : Ship(shield),
+                                                                                 ArmedShipUnit(shield, attack),
+                                                                                 ArmedRebelStarship(shield, speed, attack) {
     assert(99999 <= speed && speed <= 299795);
 }
 
-XWing::XWing(ShieldPoints shield, Speed speed, AttackPower attack)
-        : Ship(shield), ArmedShipUnit(shield, attack), ArmedRebelStarship(shield, speed, attack) {
+XWing::XWing(ShieldPoints shield, Speed speed, AttackPower attack) : Ship(shield),
+                                                                     ArmedShipUnit(shield, attack),
+                                                                     ArmedRebelStarship(shield, speed, attack) {
     assert(299796 <= speed && speed <= 2997960);
 }
 
-std::shared_ptr<Explorer> createExplorer(ShieldPoints shield, Speed speed) {
+std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield, Speed speed) {
     return std::make_shared<Explorer>(shield, speed);
 }
 
-std::shared_ptr<StarCruiser> createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) {
+std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) {
     return std::make_shared<StarCruiser>(shield, speed, attack);
 }
 
-std::shared_ptr<XWing> createXWing(ShieldPoints shield, Speed speed, AttackPower attack) {
+std::shared_ptr<RebelStarship> createXWing(ShieldPoints shield, Speed speed, AttackPower attack) {
     return std::make_shared<XWing>(shield, speed, attack);
 }

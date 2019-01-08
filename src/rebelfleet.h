@@ -59,10 +59,11 @@ public:
 };
 
 // funkcje fabrykujące
-std::shared_ptr<Explorer> createExplorer(ShieldPoints shield, Speed speed);
+// TODO zmienić typ we wskaźniku na Rebel
+std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield, Speed speed);
 
-std::shared_ptr<StarCruiser> createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);
+std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);
 
-std::shared_ptr<XWing> createXWing(ShieldPoints shield, Speed speed, AttackPower attack);
+std::shared_ptr<RebelStarship> createXWing(ShieldPoints shield, Speed speed, AttackPower attack);
 
 #endif //STARWARS2_REBELFLEET_H

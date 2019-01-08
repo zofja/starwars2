@@ -7,17 +7,15 @@
 #include <iostream>
 #include "battle.h"
 
-void attack(const std::shared_ptr<Ship> &imperial, const std::shared_ptr<Ship> &rebel) {
-    std::cout << "attack\n";
-    rebel->takeDamage(dynamic_cast<ImperialUnit*>(imperial.get())->getAttackPower());
-    dynamic_cast<RebelStarship*>(rebel.get())->causeDamage(imperial);
-}
-
 SpaceBattle::Builder::Builder() = default;
 
-SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<Ship> s) {
+SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<ImperialUnit> imperial) {
+    imperials.emplace_back(imperial);
+    return *this;
+}
 
-    ships.emplace_back(s);
+SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<RebelStarship> rebel) {
+    rebels.emplace_back(rebel);
     return *this;
 }
 
@@ -36,32 +34,36 @@ SpaceBattle::Builder &SpaceBattle::Builder::maxTime(Time t) {
     return *this;
 }
 
-SpaceBattle SpaceBattle::Builder::build() {
-    return SpaceBattle(ships, t0, t1, intergalacticTime);
-}
-
-
-SpaceBattle::SpaceBattle(std::vector<std::shared_ptr<Ship>> ships, Time t0,
-                         Time t1, std::vector<Time> igTime) : ships(std::move(ships)),
-                                                              time(t0), t1(t1),
-                                                              intergalacticTime(std::move(igTime)) {
+SpaceBattle::SpaceBattle(std::vector<std::shared_ptr<ImperialUnit>> imperials,
+                         std::vector<std::shared_ptr<RebelStarship>> rebels, Time t0, Time t1,
+                         std::vector<Time> igTime) : imperials(std::move(imperials)),
+                                                     rebels(std::move(rebels)),
+                                                     time(t0),
+                                                     t1(t1),
+                                                     intergalacticTime(std::move(igTime)) {
 
     std::cout << "intergalactic time: ";
     for (auto i : this->intergalacticTime) {
         std::cout << i << " ";
     }
     std::cout << "\n";
-    std::cout << "space battle ctor\n";
-    for (auto &s : this->ships) {
-        std::cout << s->getShield() << "\n";
-        if (s->isImperial()) {
-            this->imperialFleet++;
-        } else {
-            this->rebelFleet++;
-        }
+
+
+    std::cout << "imperials to battle\n";
+    for (auto &imperial : this->imperials) {
+        std::cout << imperial->getAliveCount() << "\n";
+        this->imperialFleet += imperial->getAliveCount();
     }
+    this->rebelFleet = this->rebels.size();
+    std::cout << "\n";
     std::cout << this->imperialFleet << " " << this->rebelFleet << "\n";
+
 }
+
+SpaceBattle SpaceBattle::Builder::build() {
+    return SpaceBattle(imperials, rebels, t0, t1, intergalacticTime);
+}
+
 
 size_t SpaceBattle::countImperialFleet() {
     return imperialFleet;
@@ -94,17 +96,26 @@ void SpaceBattle::tick(Time timeStep) {
 
 void SpaceBattle::imperialAttack() {
 
-    for (auto &imperial : ships) {
-        if (imperial->isImperial()) {
-            for (auto &rebel : ships) {
-                if (!rebel->isImperial()) {
-                    if (!imperial->isDestroyed() && !rebel->isDestroyed()) {
-                        attack(imperial, rebel);
-                        if (imperial->isDestroyed()) imperialFleet--;
-                        if (rebel->isDestroyed()) rebelFleet--;
-                    }
-                }
+    for (auto &imperial : imperials) {
+        for (auto &rebel : rebels) {
+            if (!imperial->isDestroyed() && !rebel->isDestroyed()) {
+                auto aliveImperials = imperial->getAliveCount();
+                std::cout << "alive imperials before attack\n" << aliveImperials << " " << imperial->getShield() << "\n";
+                attack(imperial, rebel);
+                imperialFleet -= (aliveImperials - imperial->getAliveCount());
+                std::cout << "alive after\n" << imperialFleet << " " << imperial->getShield() << "\n";
+                if (rebel->isDestroyed()) rebelFleet--;
             }
         }
     }
+}
+
+void attack(std::shared_ptr<ImperialUnit> imperial, std::shared_ptr<RebelStarship> rebel) {
+
+    std::cout << "attack\n";
+    rebel->takeDamage(imperial.get()->getAttackPower());
+    std::cout << imperial->getShield() << "\n";
+    rebel.get()->causeDamage(imperial);
+    std::cout << imperial->getShield() << "\n";
+    std::cout << "after attack\n";
 }

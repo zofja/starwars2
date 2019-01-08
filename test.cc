@@ -21,7 +21,7 @@ int main() {
     cout << "XWing: " << endl;
     cout << ">shield: " << xwing->getShield() << endl;
     cout << ">speed: " << xwing->getSpeed() << endl;
-    cout << ">attack: " << xwing->getAttackPower() << endl;
+//    cout << ">attack: " << xwing->getAttackPower() << endl;
     cout << ">isImperial: " << xwing->isImperial() << endl;
     cout << ">isArmed: " << xwing->isArmed() << endl;
     cout << endl;
@@ -36,7 +36,7 @@ int main() {
     cout << "StarCruiser: " << endl;
     cout << ">shield: " << cruiser->getShield() << endl;
     cout << ">speed: " << cruiser->getSpeed() << endl;
-    cout << ">attack: " << cruiser->getAttackPower() << endl;
+//    cout << ">attack: " << cruiser->getAttackPower() << endl;
     cout << ">isImperial: " << cruiser->isImperial() << endl;
     cout << ">isArmed: " << cruiser->isArmed() << endl;
     cout << endl;

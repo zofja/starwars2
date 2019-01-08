@@ -11,8 +11,8 @@ class SpaceBattle {
 
 public:
 
-    SpaceBattle(std::vector<std::shared_ptr<Ship>> ships, Time t0, Time t1,
-                std::vector<Time> igTime);
+    SpaceBattle(std::vector<std::shared_ptr<ImperialUnit>> imperials, std::vector<std::shared_ptr<RebelStarship>> rebels,
+                Time t0, Time t1, std::vector<Time> igTime);
 
     size_t countImperialFleet();
 
@@ -20,8 +20,12 @@ public:
 
     void tick(Time timeStep);
 
+    // TODO debug - usunąć potem
     void printShips() {
-        for (auto &ship : ships) {
+        for (auto &ship : rebels) {
+            std::cout << ship->getShield() << "\n";
+        }
+        for (auto &ship : imperials) {
             std::cout << ship->getShield() << "\n";
         }
     };
@@ -32,7 +36,9 @@ public:
 
         Builder();
 
-        Builder &ship(std::shared_ptr<Ship> s);
+        Builder &ship(std::shared_ptr<ImperialUnit> imperial);
+
+        Builder &ship(std::shared_ptr<RebelStarship> rebel);
 
         Builder &startTime(Time t);
 
@@ -43,7 +49,8 @@ public:
 
     private:
 
-        std::vector<std::shared_ptr<Ship>> ships;
+        std::vector<std::shared_ptr<ImperialUnit>> imperials;
+        std::vector<std::shared_ptr<RebelStarship>> rebels;
         std::vector<Time> intergalacticTime;
         Time t0;
         Time t1;
@@ -52,7 +59,8 @@ public:
 
 private:
 
-    std::vector<std::shared_ptr<Ship>> ships;
+    std::vector<std::shared_ptr<ImperialUnit>> imperials;
+    std::vector<std::shared_ptr<RebelStarship>> rebels;
     Time time;
     Time t1;
     std::vector<Time> intergalacticTime;

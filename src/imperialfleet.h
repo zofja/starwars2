@@ -36,14 +36,14 @@ public:
     TIEFighter(ShieldPoints shield, AttackPower attack);
 };
 
-/*
+
 class Squadron : public ImperialUnit {
 
 public:
 
-    Squadron(std::initializer_list<ImperialUnit> ships);
+    Squadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships);
 
-    explicit Squadron(std::vector<ImperialUnit> ships);
+    explicit Squadron(std::vector<std::shared_ptr<ImperialUnit>> ships);
 
     ShieldPoints getShield() override;
 
@@ -51,26 +51,24 @@ public:
 
     void takeDamage(AttackPower damage) override;
 
-    std::vector<ImperialUnit> &getShips();
+    std::vector<std::shared_ptr<ImperialUnit>> &getShips();
 
 private:
 
-    std::vector<ImperialUnit> ships;
+    std::vector<std::shared_ptr<ImperialUnit>> ships;
 
 };
- */
+
 
 // funkcje fabrykujące
-std::shared_ptr<DeathStar> createDeathStar(ShieldPoints shield, AttackPower attack);
+std::shared_ptr<ImperialUnit> createDeathStar(ShieldPoints shield, AttackPower attack);
 
-std::shared_ptr<ImperialDestroyer> createImperialDestroyer(ShieldPoints shield, AttackPower attack);
+std::shared_ptr<ImperialUnit> createImperialDestroyer(ShieldPoints shield, AttackPower attack);
 
-std::shared_ptr<TIEFighter> createTIEFighter(ShieldPoints shield, AttackPower attack);
+std::shared_ptr<ImperialUnit> createTIEFighter(ShieldPoints shield, AttackPower attack);
 
-/*
-std::shared_ptr<Squadron> createSquadron(std::initializer_list<ImperialUnit> ships);
+std::shared_ptr<Squadron> createSquadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships);
 
-std::shared_ptr<Squadron> createSquadron(std::vector<ImperialUnit> ships);
-*/
+std::shared_ptr<Squadron> createSquadron(std::vector<std::shared_ptr<ImperialUnit>> ships);
 
 #endif //STARWARS2_IMPERIALFLEET_H

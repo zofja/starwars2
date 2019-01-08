@@ -14,6 +14,9 @@ protected:
 
     ShieldPoints shield;
 
+    size_t aliveCount = 1;
+
+
 public:
 
     virtual ShieldPoints getShield() = 0;
@@ -22,7 +25,14 @@ public:
 
     virtual bool isImperial() = 0;
 
-    virtual bool isDestroyed() = 0;
+    virtual bool isDestroyed() {
+        return this->shield == 0;
+    }
+
+    virtual size_t getAliveCount() {
+        return this->aliveCount;
+    }
+
 
 protected:
 
@@ -40,7 +50,7 @@ public:
 
     void takeDamage(AttackPower damage) override;
 
-    bool isDestroyed() override;
+//    bool isDestroyed() override;
 
 public:
 
@@ -81,12 +91,11 @@ class ImperialUnit : public virtual ArmedShipUnit {
 
 public:
 
-    explicit ImperialUnit() = default;
-    explicit ImperialUnit(ShieldPoints shield, AttackPower attack);
-
     bool isImperial() override;
 
 protected:
+
+    explicit ImperialUnit(ShieldPoints shield, AttackPower attack);
 
 };
 
