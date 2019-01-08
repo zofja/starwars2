@@ -35,18 +35,16 @@ SpaceBattle::Builder &SpaceBattle::Builder::maxTime(Time t) {
 }
 
 SpaceBattle::SpaceBattle(std::vector<std::shared_ptr<ImperialUnit>> imperials,
-                         std::vector<std::shared_ptr<RebelStarship>> rebels, Time t0, Time t1,
-                         std::vector<Time> igTime) : imperials(std::move(imperials)),
+                         std::vector<std::shared_ptr<RebelStarship>> rebels, Time t0, Time t1) : imperials(std::move(imperials)),
                                                      rebels(std::move(rebels)),
-                                                     time(t0),
-                                                     t1(t1),
-                                                     intergalacticTime(std::move(igTime)) {
+                                                     timeStrategy(std::make_shared<OurTimeStrategy>(t0, t1)),
+                                                     attackStrategy(std::make_shared<OurAttackStrategy>()){
 
-    std::cout << "intergalactic time: ";
-    for (auto i : this->intergalacticTime) {
-        std::cout << i << " ";
-    }
-    std::cout << "\n";
+//    std::cout << "intergalactic time: ";
+//    for (auto i : this->intergalacticTime) {
+//        std::cout << i << " ";
+//    }
+//    std::cout << "\n";
 
 
     std::cout << "imperials to battle\n";
@@ -61,7 +59,7 @@ SpaceBattle::SpaceBattle(std::vector<std::shared_ptr<ImperialUnit>> imperials,
 }
 
 SpaceBattle SpaceBattle::Builder::build() {
-    return SpaceBattle(imperials, rebels, t0, t1, intergalacticTime);
+    return SpaceBattle(imperials, rebels, t0, t1);
 }
 
 
@@ -75,7 +73,7 @@ size_t SpaceBattle::countRebelFleet() {
 
 void SpaceBattle::tick(Time timeStep) {
 
-    std::cout << "tick\n";
+    std::cout << "moveTime\n";
     std::cout << countImperialFleet() << " " << countRebelFleet() << "\n";
     if (countImperialFleet() == 0 && countRebelFleet() == 0) {
         std::cout << "DRAW\n";
@@ -84,31 +82,31 @@ void SpaceBattle::tick(Time timeStep) {
     } else if (countImperialFleet() == 0) {
         std::cout << "REBELLION WON\n";
     } else {
-        if (std::binary_search(intergalacticTime.begin(), intergalacticTime.end(), time)) {
+        if (timeStrategy.get()->moveTime(timeStep)) {
             std::cout << "imperial attack\n";
-            imperialAttack();
+            std::pair<int, int> destroyed = attackStrategy.get()->imperialAttack(this->imperials, this->rebels);
+            this->imperialFleet -= destroyed.first;
+            this->rebelFleet -= destroyed.second;
         }
     }
 
-    time = (time + timeStep) % (t1 + 1);
-
 }
 
-void SpaceBattle::imperialAttack() {
-
-    for (auto &imperial : imperials) {
-        for (auto &rebel : rebels) {
-            if (!imperial->isDestroyed() && !rebel->isDestroyed()) {
-                auto aliveImperials = imperial->getAliveCount();
-                std::cout << "alive imperials before attack\n" << aliveImperials << " " << imperial->getShield() << "\n";
-                attack(imperial, rebel);
-                imperialFleet -= (aliveImperials - imperial->getAliveCount());
-                std::cout << "alive after\n" << imperialFleet << " " << imperial->getShield() << "\n";
-                if (rebel->isDestroyed()) rebelFleet--;
-            }
-        }
-    }
-}
+//void SpaceBattle::imperialAttack() {
+//
+//    for (auto &imperial : imperials) {
+//        for (auto &rebel : rebels) {
+//            if (!imperial->isDestroyed() && !rebel->isDestroyed()) {
+//                auto aliveImperials = imperial->getAliveCount();
+//                std::cout << "alive imperials before attack\n" << aliveImperials << " " << imperial->getShield() << "\n";
+//                attack(imperial, rebel);
+//                imperialFleet -= (aliveImperials - imperial->getAliveCount());
+//                std::cout << "alive after\n" << imperialFleet << " " << imperial->getShield() << "\n";
+//                if (rebel->isDestroyed()) rebelFleet--;
+//            }
+//        }
+//    }
+//}
 
 void attack(std::shared_ptr<ImperialUnit> imperial, std::shared_ptr<RebelStarship> rebel) {
 
@@ -119,3 +117,33 @@ void attack(std::shared_ptr<ImperialUnit> imperial, std::shared_ptr<RebelStarshi
     std::cout << imperial->getShield() << "\n";
     std::cout << "after attack\n";
 }
+
+OurTimeStrategy::OurTimeStrategy(Time startTime, Time maxTime) : time(startTime), maxTime(maxTime) {}
+
+bool OurTimeStrategy::moveTime(Time timeStep) {
+
+    bool isTimeToAttack = (this->time % 2 == 0 || this->time % 3 == 0) && this->time % 5 != 0;
+    time = (time + timeStep) % (maxTime + 1);
+    return isTimeToAttack;
+}
+
+std::pair<int, int> OurAttackStrategy::imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> imperials, std::vector<std::shared_ptr<RebelStarship>> rebels) {
+
+    int imperialsDestroyed = 0;
+    int rebelsDestroyed = 0;
+
+    for (auto &imperial : imperials) {
+        for (auto &rebel : rebels) {
+            if (!imperial->isDestroyed() && !rebel->isDestroyed()) {
+                auto aliveImperials = imperial->getAliveCount();
+                attack(imperial, rebel);
+                imperialsDestroyed += (aliveImperials - imperial->getAliveCount());
+                if (rebel->isDestroyed()) rebelsDestroyed++;
+            }
+        }
+    }
+
+    return std::make_pair(imperialsDestroyed, rebelsDestroyed);
+}
+
+OurAttackStrategy::OurAttackStrategy() = default;
