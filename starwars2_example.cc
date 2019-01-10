@@ -11,7 +11,9 @@ int main() {
     auto deathStar = createDeathStar(10000, 75);
     auto fighter = createTIEFighter(50, 9);
     auto destroyer = createImperialDestroyer(150, 20);
-    auto squadron = createSquadron({deathStar, fighter});
+    // TODO co w końcu z tym konstruktorem
+    std::initializer_list<std::shared_ptr<ImperialUnit>> list = {deathStar, fighter};
+    auto squadron = createSquadron(list);
 
     auto battle = SpaceBattle::Builder()
         .ship(squadron)
@@ -21,14 +23,10 @@ int main() {
         .ship(explorer)
         .build();
 
-    std::cout << xwing->isDestroyed() << "\n";
-    std::cout << squadron->isDestroyed() << "\n";
-
     assert(battle.countRebelFleet() == 2);
     assert(battle.countImperialFleet() == 2);
 
     battle.tick(3);
-    std::cout << battle.countRebelFleet() << " " << battle.countImperialFleet() << "\n";
     assert(battle.countRebelFleet() == 2);
     assert(battle.countImperialFleet() == 1);
 

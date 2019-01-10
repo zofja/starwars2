@@ -2,6 +2,13 @@
 
 Ship::Ship(ShieldPoints shield) : shield(shield) {}
 
+bool Ship::isDestroyed() {
+    return this->shield == 0;
+}
+
+size_t Ship::getAliveCount() {
+    return this->aliveCount;
+}
 
 void BasicShip::takeDamage(AttackPower damage) {
     this->shield = damage > this->shield ? 0 : this->shield - damage;
@@ -14,10 +21,6 @@ ShieldPoints BasicShip::getShield() {
 
 BasicShip::BasicShip(ShieldPoints shield) : Ship(shield) {}
 
-//bool BasicShip::isDestroyed() {
-//    return this->getShield() == 0;
-//}
-
 AttackPower ArmedShip::getAttackPower() {
     return (this->isDestroyed()) ? 0 : this->attack;
 }
@@ -27,7 +30,3 @@ ArmedShipUnit::ArmedShipUnit(ShieldPoints shield, AttackPower attack) : Ship(shi
 ArmedShip::ArmedShip(ShieldPoints shield, AttackPower attack) : ArmedShipUnit(shield, attack) {}
 
 ImperialUnit::ImperialUnit(ShieldPoints shield, AttackPower attack) : ArmedShipUnit(shield, attack) {}
-
-bool ImperialUnit::isImperial() {
-    return true;
-}

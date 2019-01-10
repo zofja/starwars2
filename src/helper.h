@@ -7,7 +7,7 @@ typedef int ShieldPoints;
 typedef int Speed;
 typedef int AttackPower;
 
-// Pure virtual base class
+// TODO pure virtual abstract classes
 class Ship {
 
 protected:
@@ -23,43 +23,36 @@ public:
 
     virtual void takeDamage(AttackPower damage) = 0;
 
-    virtual bool isImperial() = 0;
+    virtual bool isDestroyed();
 
-    virtual bool isDestroyed() {
-        return this->shield == 0;
-    }
-
-    virtual size_t getAliveCount() {
-        return this->aliveCount;
-    }
-
+    virtual size_t getAliveCount();
 
 protected:
 
+
     explicit Ship(ShieldPoints shield);
+
+    virtual ~Ship() = default;
 
 };
 
-// Abstract virtual class
 class BasicShip : public virtual Ship {
 
 public:
 
-    // override bo może
     ShieldPoints getShield() override;
 
     void takeDamage(AttackPower damage) override;
-
-//    bool isDestroyed() override;
 
 public:
 
     explicit BasicShip(ShieldPoints shield);
 
+    ~BasicShip() override = default;
+
 };
 
 
-// Abstract virtual class
 class ArmedShipUnit : public virtual Ship {
 
 public:
@@ -70,11 +63,12 @@ protected:
 
     ArmedShipUnit(ShieldPoints shield, AttackPower attack);
 
+    ~ArmedShipUnit() override = default;
+
     AttackPower attack;
 
 };
 
-// Abstract virtual class
 class ArmedShip : public virtual ArmedShipUnit {
 
 public:
@@ -85,17 +79,17 @@ protected:
 
     explicit ArmedShip(ShieldPoints shield, AttackPower attack);
 
+    ~ArmedShip() override = default;
+
 };
 
 class ImperialUnit : public virtual ArmedShipUnit {
 
-public:
-
-    bool isImperial() override;
-
 protected:
 
     explicit ImperialUnit(ShieldPoints shield, AttackPower attack);
+
+    ~ImperialUnit() override = default;
 
 };
 

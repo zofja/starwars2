@@ -9,12 +9,10 @@ Speed RebelStarship::getSpeed() {
 
 RebelStarship::RebelStarship(ShieldPoints shield, Speed speed) : BasicShip(shield), speed(speed) {}
 
-bool RebelStarship::isImperial() {
-    return false;
-}
-
 // TODO no głupie to przyznaję
-void RebelStarship::causeDamage(const std::shared_ptr<Ship> &imperial) {}
+void RebelStarship::causeDamage(const std::shared_ptr<Ship> &imperial) {
+    imperial->takeDamage(0);
+}
 
 ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : Ship(shield),
                                                                                                ArmedShipUnit(shield, attack),

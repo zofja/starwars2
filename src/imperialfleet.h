@@ -9,10 +9,6 @@
 
 class ImperialStarship : public BasicShip, public ArmedShip, public ImperialUnit {
 
-public:
-
-    bool isDestroyed() override;
-
 protected:
 
     ImperialStarship(ShieldPoints shield, AttackPower attack);
@@ -50,8 +46,6 @@ public:
     AttackPower getAttackPower() override;
 
     void takeDamage(AttackPower damage) override;
-
-    std::vector<std::shared_ptr<ImperialUnit>> &getShips();
 
 private:
 

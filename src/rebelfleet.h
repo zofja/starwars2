@@ -15,8 +15,6 @@ public:
 
     Speed getSpeed();
 
-    bool isImperial() override;
-
     virtual bool isArmed() = 0;
 
 protected:
@@ -58,8 +56,6 @@ public:
     XWing(ShieldPoints shield, Speed speed, AttackPower attack);
 };
 
-// funkcje fabrykujące
-// TODO zmienić typ we wskaźniku na Rebel
 std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield, Speed speed);
 
 std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);

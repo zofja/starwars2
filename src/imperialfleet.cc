@@ -3,14 +3,10 @@
 #include "imperialfleet.h"
 
 ImperialStarship::ImperialStarship(ShieldPoints shield, AttackPower attack) : Ship(shield),
-                                                                              BasicShip(shield),
                                                                               ArmedShipUnit(shield, attack),
+                                                                              BasicShip(shield),
                                                                               ArmedShip(shield, attack),
                                                                               ImperialUnit(shield, attack) {}
-
-bool ImperialStarship::isDestroyed() {
-    return dynamic_cast<BasicShip *>(this)->getShield() == 0;
-}
 
 DeathStar::DeathStar(ShieldPoints shield, AttackPower attack) : Ship(shield),
                                                                 ArmedShipUnit(shield, attack),
@@ -25,9 +21,15 @@ TIEFighter::TIEFighter(ShieldPoints shield, AttackPower attack) : Ship(shield),
                                                                   ImperialStarship(shield, attack) {}
 
 
-Squadron::Squadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships) : Ship(0), ArmedShipUnit(0, 0), ImperialUnit(0, 0), ships(ships) {
+Squadron::Squadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships) : Squadron(
+        std::vector<std::shared_ptr<ImperialUnit>>(ships.begin(), ships.end())) {}
 
-    int shieldSum = 0, attackPowerSum = 0;
+Squadron::Squadron(std::vector<std::shared_ptr<ImperialUnit>> ships) : Ship(0),
+                                                                       ArmedShipUnit(0, 0),
+                                                                       ImperialUnit(0, 0),
+                                                                       ships(std::move(ships)) {
+    ShieldPoints shieldSum = 0;
+    AttackPower attackPowerSum = 0;
     for (auto &ship : this->ships) {
         shieldSum += ship->getShield();
         attackPowerSum += ship->getAttackPower();
@@ -35,17 +37,8 @@ Squadron::Squadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships) :
     this->shield = shieldSum;
     this->attack = attackPowerSum;
     this->aliveCount = this->ships.size();
-}
 
-Squadron::Squadron(std::vector<std::shared_ptr<ImperialUnit>> ships) : Ship(0), ArmedShipUnit(0, 0), ImperialUnit(0, 0), ships(std::move(ships)) {
 
-    this->shield = std::accumulate(ships.begin(), ships.end(), 0, [](ShieldPoints sum, std::shared_ptr<ImperialUnit> &s) {
-        return sum += s->getShield();
-    });
-
-    this->attack = std::accumulate(ships.begin(), ships.end(), 0, [](AttackPower sum, std::shared_ptr<ImperialUnit> &s) {
-        return sum += s->getAttackPower();
-    });
 }
 
 ShieldPoints Squadron::getShield() {
@@ -54,10 +47,6 @@ ShieldPoints Squadron::getShield() {
 
 AttackPower Squadron::getAttackPower() {
     return attack;
-}
-
-std::vector<std::shared_ptr<ImperialUnit>> &Squadron::getShips() {
-    return this->ships;
 }
 
 void Squadron::takeDamage(AttackPower damage) {

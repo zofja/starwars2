@@ -10,42 +10,54 @@ typedef int Time;
 class TimeStrategy {
 
 public:
+
     virtual bool moveTime(Time timeStep) = 0;
+
+    virtual ~TimeStrategy() = default;
 
 };
 
-class OurTimeStrategy : public TimeStrategy {
-
-private:
-    Time time;
-    Time maxTime;
+class OurTimeStrategy : public virtual TimeStrategy {
 
 public:
+
     OurTimeStrategy(Time startTime, Time maxTime);
+
     bool moveTime(Time timeStep) override;
+
+private:
+
+    Time time;
+    Time maxTime;
 
 };
 
 class AttackStrategy {
 
 public:
-    virtual std::pair<int, int> imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> imperials, std::vector<std::shared_ptr<RebelStarship>> rebels) = 0;
+
+    virtual ~AttackStrategy() = default;
+
+    virtual void imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
+                                std::vector<std::shared_ptr<RebelStarship>> &rebels) = 0;
 
 };
 
-class OurAttackStrategy : public AttackStrategy {
+class OurAttackStrategy : public virtual AttackStrategy {
 
 public:
-    std::pair<int, int> imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> imperials, std::vector<std::shared_ptr<RebelStarship>> rebels) override;
     OurAttackStrategy();
-};
 
+    void imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
+                        std::vector<std::shared_ptr<RebelStarship>> &rebels) override;
+};
 
 class SpaceBattle {
 
 public:
 
-    SpaceBattle(std::vector<std::shared_ptr<ImperialUnit>> imperials, std::vector<std::shared_ptr<RebelStarship>> rebels,
+    SpaceBattle(std::vector<std::shared_ptr<ImperialUnit>> imperials,
+                std::vector<std::shared_ptr<RebelStarship>> rebels,
                 Time t0, Time t1);
 
     size_t countImperialFleet();
@@ -54,25 +66,15 @@ public:
 
     void tick(Time timeStep);
 
-    // TODO debug - usunąć potem
-    void printShips() {
-        for (auto &ship : rebels) {
-            std::cout << ship->getShield() << "\n";
-        }
-        for (auto &ship : imperials) {
-            std::cout << ship->getShield() << "\n";
-        }
-    };
-
     class Builder {
 
     public:
 
         Builder();
 
-        Builder &ship(std::shared_ptr<ImperialUnit> imperial);
+        Builder &ship(const std::shared_ptr<ImperialUnit> &imperial);
 
-        Builder &ship(std::shared_ptr<RebelStarship> rebel);
+        Builder &ship(const std::shared_ptr<RebelStarship> &rebel);
 
         Builder &startTime(Time t);
 
@@ -85,7 +87,6 @@ public:
 
         std::vector<std::shared_ptr<ImperialUnit>> imperials;
         std::vector<std::shared_ptr<RebelStarship>> rebels;
-        std::vector<Time> intergalacticTime;
         Time t0;
         Time t1;
 
@@ -95,14 +96,11 @@ private:
 
     std::vector<std::shared_ptr<ImperialUnit>> imperials;
     std::vector<std::shared_ptr<RebelStarship>> rebels;
-    size_t imperialFleet = 0;
-    size_t rebelFleet = 0;
     std::shared_ptr<TimeStrategy> timeStrategy;
     std::shared_ptr<AttackStrategy> attackStrategy;
 
-    void imperialAttack();
 };
 
-void attack(std::shared_ptr<ImperialUnit> imperial, std::shared_ptr<RebelStarship> rebel);
+void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarship> &rebel);
 
 #endif //STARWARS2_BATTLE_H
