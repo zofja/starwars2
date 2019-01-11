@@ -14,7 +14,6 @@ public:
     virtual bool moveTime(Time timeStep) = 0;
 
     virtual ~TimeStrategy() = default;
-
 };
 
 class OurTimeStrategy : public virtual TimeStrategy {

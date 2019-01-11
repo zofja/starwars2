@@ -7,25 +7,23 @@
 class RebelStarship : public BasicShip {
 
 protected:
+
     Speed speed;
 
 public:
 
-    virtual void causeDamage(const std::shared_ptr<Ship> &imperial);
-
     Speed getSpeed();
 
-    virtual bool isArmed() = 0;
+    virtual void causeDamage(const std::shared_ptr<Ship> &imperial) = 0;
 
 protected:
+
     RebelStarship(ShieldPoints shield, Speed speed);
 };
 
 class ArmedRebelStarship : public RebelStarship, public ArmedShip {
 
 public:
-
-    bool isArmed() override;
 
     void causeDamage(const std::shared_ptr<Ship> &imperial) override;
 
@@ -38,14 +36,16 @@ protected:
 class Explorer : public RebelStarship {
 
 public:
-    Explorer(ShieldPoints shield, Speed speed);
 
-    bool isArmed() override;
+    void causeDamage(const std::shared_ptr<Ship> &imperial) override;
+
+    Explorer(ShieldPoints shield, Speed speed);
 };
 
 class StarCruiser : public ArmedRebelStarship {
 
 public:
+
     StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);
 
 };
@@ -53,6 +53,7 @@ public:
 class XWing : public ArmedRebelStarship {
 
 public:
+
     XWing(ShieldPoints shield, Speed speed, AttackPower attack);
 };
 

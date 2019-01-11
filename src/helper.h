@@ -7,15 +7,7 @@ typedef int ShieldPoints;
 typedef int Speed;
 typedef int AttackPower;
 
-// TODO pure virtual abstract classes
 class Ship {
-
-protected:
-
-    ShieldPoints shield;
-
-    size_t aliveCount = 1;
-
 
 public:
 
@@ -23,20 +15,19 @@ public:
 
     virtual void takeDamage(AttackPower damage) = 0;
 
-    virtual bool isDestroyed();
-
-    virtual size_t getAliveCount();
+    virtual size_t getAliveCount() = 0;
 
 protected:
 
-
-    explicit Ship(ShieldPoints shield);
-
+    Ship() = default;
     virtual ~Ship() = default;
-
 };
 
 class BasicShip : public virtual Ship {
+
+protected:
+
+    ShieldPoints shield;
 
 public:
 
@@ -44,12 +35,12 @@ public:
 
     void takeDamage(AttackPower damage) override;
 
-public:
+    size_t getAliveCount() override;
+
+protected:
 
     explicit BasicShip(ShieldPoints shield);
-
     ~BasicShip() override = default;
-
 };
 
 
@@ -61,15 +52,15 @@ public:
 
 protected:
 
-    ArmedShipUnit(ShieldPoints shield, AttackPower attack);
-
+    ArmedShipUnit() = default;
     ~ArmedShipUnit() override = default;
-
-    AttackPower attack;
-
 };
 
 class ArmedShip : public virtual ArmedShipUnit {
+
+protected:
+
+    AttackPower attack;
 
 public:
 
@@ -77,8 +68,7 @@ public:
 
 protected:
 
-    explicit ArmedShip(ShieldPoints shield, AttackPower attack);
-
+    explicit ArmedShip(AttackPower attack);
     ~ArmedShip() override = default;
 
 };
@@ -87,10 +77,8 @@ class ImperialUnit : public virtual ArmedShipUnit {
 
 protected:
 
-    explicit ImperialUnit(ShieldPoints shield, AttackPower attack);
-
+    ImperialUnit() = default;
     ~ImperialUnit() override = default;
-
 };
 
 #endif //STARWARS2_HELPER_H

@@ -2,48 +2,31 @@
 
 #include "rebelfleet.h"
 
-
 Speed RebelStarship::getSpeed() {
     return this->speed;
 }
 
 RebelStarship::RebelStarship(ShieldPoints shield, Speed speed) : BasicShip(shield), speed(speed) {}
 
-// TODO no głupie to przyznaję
-void RebelStarship::causeDamage(const std::shared_ptr<Ship> &imperial) {
-    imperial->takeDamage(0);
-}
-
-ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : Ship(shield),
-                                                                                               ArmedShipUnit(shield, attack),
-                                                                                               RebelStarship(shield, speed),
-                                                                                               ArmedShip(shield, attack) {}
-
-bool ArmedRebelStarship::isArmed() {
-    return true;
-}
+ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : RebelStarship(shield, speed), ArmedShip(attack) {}
 
 void ArmedRebelStarship::causeDamage(const std::shared_ptr<Ship> &imperial) {
     imperial->takeDamage(this->getAttackPower());
 }
 
-Explorer::Explorer(ShieldPoints shield, Speed speed) : Ship(shield), RebelStarship(shield, speed) {
+void Explorer::causeDamage(const std::shared_ptr<Ship> &imperial) {
+    imperial->takeDamage(0);
+}
+
+Explorer::Explorer(ShieldPoints shield, Speed speed) : RebelStarship(shield, speed) {
     assert(299796 <= speed && speed <= 2997960);
 }
 
-bool Explorer::isArmed() {
-    return false;
-}
-
-StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : Ship(shield),
-                                                                                 ArmedShipUnit(shield, attack),
-                                                                                 ArmedRebelStarship(shield, speed, attack) {
+StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed, attack) {
     assert(99999 <= speed && speed <= 299795);
 }
 
-XWing::XWing(ShieldPoints shield, Speed speed, AttackPower attack) : Ship(shield),
-                                                                     ArmedShipUnit(shield, attack),
-                                                                     ArmedRebelStarship(shield, speed, attack) {
+XWing::XWing(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed, attack) {
     assert(299796 <= speed && speed <= 2997960);
 }
 

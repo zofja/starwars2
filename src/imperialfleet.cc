@@ -2,68 +2,50 @@
 #include <numeric>
 #include "imperialfleet.h"
 
-ImperialStarship::ImperialStarship(ShieldPoints shield, AttackPower attack) : Ship(shield),
-                                                                              ArmedShipUnit(shield, attack),
-                                                                              BasicShip(shield),
-                                                                              ArmedShip(shield, attack),
-                                                                              ImperialUnit(shield, attack) {}
+ImperialStarship::ImperialStarship(ShieldPoints shield, AttackPower attack) : BasicShip(shield), ArmedShip(attack) {}
 
-DeathStar::DeathStar(ShieldPoints shield, AttackPower attack) : Ship(shield),
-                                                                ArmedShipUnit(shield, attack),
-                                                                ImperialStarship(shield, attack) {}
+DeathStar::DeathStar(ShieldPoints shield, AttackPower attack) : ImperialStarship(shield, attack) {}
 
-ImperialDestroyer::ImperialDestroyer(ShieldPoints shield, AttackPower attack) : Ship(shield),
-                                                                                ArmedShipUnit(shield, attack),
-                                                                                ImperialStarship(shield, attack) {}
+ImperialDestroyer::ImperialDestroyer(ShieldPoints shield, AttackPower attack) : ImperialStarship(shield, attack) {}
 
-TIEFighter::TIEFighter(ShieldPoints shield, AttackPower attack) : Ship(shield),
-                                                                  ArmedShipUnit(shield, attack),
-                                                                  ImperialStarship(shield, attack) {}
-
+TIEFighter::TIEFighter(ShieldPoints shield, AttackPower attack) : ImperialStarship(shield, attack) {}
 
 Squadron::Squadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships) : Squadron(
         std::vector<std::shared_ptr<ImperialUnit>>(ships.begin(), ships.end())) {}
 
-Squadron::Squadron(std::vector<std::shared_ptr<ImperialUnit>> ships) : Ship(0),
-                                                                       ArmedShipUnit(0, 0),
-                                                                       ImperialUnit(0, 0),
-                                                                       ships(std::move(ships)) {
-    ShieldPoints shieldSum = 0;
-    AttackPower attackPowerSum = 0;
-    for (auto &ship : this->ships) {
-        shieldSum += ship->getShield();
-        attackPowerSum += ship->getAttackPower();
-    }
-    this->shield = shieldSum;
-    this->attack = attackPowerSum;
-    this->aliveCount = this->ships.size();
-
-
-}
+Squadron::Squadron(std::vector<std::shared_ptr<ImperialUnit>> ships) : ships(std::move(ships)) {}
 
 ShieldPoints Squadron::getShield() {
-    return this->shield;
+
+    ShieldPoints cumulativeShield = 0;
+    for (auto &ship : this->ships)
+        cumulativeShield += ship->getShield();
+
+    return cumulativeShield;
 }
 
 AttackPower Squadron::getAttackPower() {
-    return attack;
+
+    AttackPower cumulativeAttack = 0;
+    for (auto &ship : this->ships)
+        cumulativeAttack += ship->getAttackPower();
+
+    return cumulativeAttack;
 }
 
 void Squadron::takeDamage(AttackPower damage) {
-    for (auto &s : ships) {
 
-        if (!s->isDestroyed()) {
-            auto shield = s->getShield();
-            auto attack = s->getAttackPower();
-            auto aliveCount = s->getAliveCount();
+    for (auto &s : this->ships)
+        s->takeDamage(damage);
+}
 
-            s->takeDamage(damage);
+size_t Squadron::getAliveCount() {
 
-            this->shield -= (shield - s->getShield());
-            this->aliveCount -= (aliveCount - s->getAliveCount());
-            this->attack -= (attack - s->getAttackPower());
-        }
-    }
+    size_t aliveCount = 0;
+    for (auto &ship : this->ships)
+        aliveCount += ship->getAliveCount();
+
+    return aliveCount;
 }
 
 std::shared_ptr<ImperialUnit> createDeathStar(ShieldPoints shield, AttackPower attack) {

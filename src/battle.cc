@@ -87,7 +87,7 @@ void OurAttackStrategy::imperialAttack(std::vector<std::shared_ptr<ImperialUnit>
 
     for (auto &imperial : imperials) {
         for (auto &rebel : rebels) {
-            if (!imperial->isDestroyed() && !rebel->isDestroyed()) {
+            if (imperial->getAliveCount() != 0 && rebel->getAliveCount() != 0) {
                 attack(imperial, rebel);
             }
         }

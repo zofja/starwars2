@@ -17,23 +17,30 @@ protected:
 class DeathStar : public ImperialStarship {
 
 public:
+
     DeathStar(ShieldPoints shield, AttackPower attack);
 };
 
 class ImperialDestroyer : public ImperialStarship {
 
 public:
+
     ImperialDestroyer(ShieldPoints shield, AttackPower attack);
 };
 
 class TIEFighter : public ImperialStarship {
 
 public:
+
     TIEFighter(ShieldPoints shield, AttackPower attack);
 };
 
 
 class Squadron : public ImperialUnit {
+
+private:
+
+    std::vector<std::shared_ptr<ImperialUnit>> ships;
 
 public:
 
@@ -47,10 +54,7 @@ public:
 
     void takeDamage(AttackPower damage) override;
 
-private:
-
-    std::vector<std::shared_ptr<ImperialUnit>> ships;
-
+    size_t getAliveCount() override;
 };
 
 
