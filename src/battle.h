@@ -1,5 +1,5 @@
-#ifndef STARWARS2_BATTLE_H
-#define STARWARS2_BATTLE_H
+#ifndef BATTLE_H
+#define BATTLE_H
 
 #include <vector>
 #include "rebelfleet.h"
@@ -13,14 +13,18 @@ public:
 
     virtual bool moveTime(Time timeStep) = 0;
 
+protected:
+
+    TimeStrategy() = default;
+
     virtual ~TimeStrategy() = default;
 };
 
-class OurTimeStrategy : public virtual TimeStrategy {
+class DefaultTimeStrategy : public virtual TimeStrategy {
 
 public:
 
-    OurTimeStrategy(Time startTime, Time maxTime);
+    DefaultTimeStrategy(Time startTime, Time maxTime);
 
     bool moveTime(Time timeStep) override;
 
@@ -35,17 +39,20 @@ class AttackStrategy {
 
 public:
 
-    virtual ~AttackStrategy() = default;
-
     virtual void imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
                                 std::vector<std::shared_ptr<RebelStarship>> &rebels) = 0;
 
+protected:
+
+    AttackStrategy() = default;
+
+    virtual ~AttackStrategy() = default;
 };
 
-class OurAttackStrategy : public virtual AttackStrategy {
+class DefaultAttackStrategy : public virtual AttackStrategy {
 
 public:
-    OurAttackStrategy();
+    DefaultAttackStrategy();
 
     void imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
                         std::vector<std::shared_ptr<RebelStarship>> &rebels) override;
@@ -55,8 +62,8 @@ class SpaceBattle {
 
 public:
 
-    SpaceBattle(std::vector<std::shared_ptr<ImperialUnit>> imperials,
-                std::vector<std::shared_ptr<RebelStarship>> rebels,
+    SpaceBattle(const std::vector<std::shared_ptr<ImperialUnit>> &imperials,
+                const std::vector<std::shared_ptr<RebelStarship>> &rebels,
                 Time t0, Time t1);
 
     size_t countImperialFleet();
@@ -102,4 +109,4 @@ private:
 
 void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarship> &rebel);
 
-#endif //STARWARS2_BATTLE_H
+#endif

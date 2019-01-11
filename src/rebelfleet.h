@@ -1,5 +1,5 @@
-#ifndef STARWARS2_REBELFLEET_H
-#define STARWARS2_REBELFLEET_H
+#ifndef REBELFLEET_H
+#define REBELFLEET_H
 
 #include <memory>
 #include "helper.h"
@@ -19,6 +19,8 @@ public:
 protected:
 
     RebelStarship(ShieldPoints shield, Speed speed);
+
+    virtual ~RebelStarship() = default;
 };
 
 class ArmedRebelStarship : public RebelStarship, public ArmedShip {
@@ -30,6 +32,8 @@ public:
 protected:
 
     ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack);
+
+    virtual ~ArmedRebelStarship() = default;
 };
 
 
@@ -40,6 +44,8 @@ public:
     void causeDamage(const std::shared_ptr<Ship> &imperial) override;
 
     Explorer(ShieldPoints shield, Speed speed);
+
+    ~Explorer() = default;
 };
 
 class StarCruiser : public ArmedRebelStarship {
@@ -48,6 +54,7 @@ public:
 
     StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);
 
+    ~StarCruiser() = default;
 };
 
 class XWing : public ArmedRebelStarship {
@@ -55,6 +62,8 @@ class XWing : public ArmedRebelStarship {
 public:
 
     XWing(ShieldPoints shield, Speed speed, AttackPower attack);
+
+    ~XWing() = default;
 };
 
 std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield, Speed speed);
@@ -63,4 +72,4 @@ std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield, Speed spee
 
 std::shared_ptr<RebelStarship> createXWing(ShieldPoints shield, Speed speed, AttackPower attack);
 
-#endif //STARWARS2_REBELFLEET_H
+#endif

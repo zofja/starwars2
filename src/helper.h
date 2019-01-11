@@ -1,5 +1,5 @@
-#ifndef STARWARS2_HELPER_H
-#define STARWARS2_HELPER_H
+#ifndef HELPER_H
+#define HELPER_H
 
 #include <memory>
 
@@ -20,6 +20,7 @@ public:
 protected:
 
     Ship() = default;
+
     virtual ~Ship() = default;
 };
 
@@ -40,7 +41,8 @@ public:
 protected:
 
     explicit BasicShip(ShieldPoints shield);
-    ~BasicShip() override = default;
+
+    virtual ~BasicShip() = default;
 };
 
 
@@ -53,7 +55,8 @@ public:
 protected:
 
     ArmedShipUnit() = default;
-    ~ArmedShipUnit() override = default;
+
+    virtual ~ArmedShipUnit() = default;
 };
 
 class ArmedShip : public virtual ArmedShipUnit {
@@ -69,7 +72,8 @@ public:
 protected:
 
     explicit ArmedShip(AttackPower attack);
-    ~ArmedShip() override = default;
+
+    virtual ~ArmedShip() = default;
 
 };
 
@@ -78,7 +82,8 @@ class ImperialUnit : public virtual ArmedShipUnit {
 protected:
 
     ImperialUnit() = default;
-    ~ImperialUnit() override = default;
+
+    virtual ~ImperialUnit() = default;
 };
 
-#endif //STARWARS2_HELPER_H
+#endif

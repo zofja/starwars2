@@ -1,33 +1,38 @@
 #include <cassert>
-
 #include "rebelfleet.h"
+
+const Speed LO_SLOW = 99999;
+const Speed HI_SLOW = 299795;
+const Speed LO_FAST = 299796;
+const Speed HI_FAST = 2997960;
+
+RebelStarship::RebelStarship(ShieldPoints shield, Speed speed) : BasicShip(shield), speed(speed) {}
 
 Speed RebelStarship::getSpeed() {
     return this->speed;
 }
 
-RebelStarship::RebelStarship(ShieldPoints shield, Speed speed) : BasicShip(shield), speed(speed) {}
-
-ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : RebelStarship(shield, speed), ArmedShip(attack) {}
+ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : RebelStarship(shield, speed),
+                                                                                               ArmedShip(attack) {}
 
 void ArmedRebelStarship::causeDamage(const std::shared_ptr<Ship> &imperial) {
     imperial->takeDamage(this->getAttackPower());
+}
+
+Explorer::Explorer(ShieldPoints shield, Speed speed) : RebelStarship(shield, speed) {
+    assert(LO_FAST <= speed && speed <= HI_FAST);
 }
 
 void Explorer::causeDamage(const std::shared_ptr<Ship> &imperial) {
     imperial->takeDamage(0);
 }
 
-Explorer::Explorer(ShieldPoints shield, Speed speed) : RebelStarship(shield, speed) {
-    assert(299796 <= speed && speed <= 2997960);
-}
-
 StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed, attack) {
-    assert(99999 <= speed && speed <= 299795);
+    assert(LO_SLOW <= speed && speed <= HI_SLOW);
 }
 
 XWing::XWing(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed, attack) {
-    assert(299796 <= speed && speed <= 2997960);
+    assert(LO_FAST <= speed && speed <= HI_FAST);
 }
 
 std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield, Speed speed) {

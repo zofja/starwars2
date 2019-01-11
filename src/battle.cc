@@ -1,6 +1,3 @@
-#include <utility>
-#include <algorithm>
-#include <array>
 #include <iostream>
 #include "battle.h"
 
@@ -26,11 +23,12 @@ SpaceBattle::Builder &SpaceBattle::Builder::maxTime(Time t) {
     return *this;
 }
 
-SpaceBattle::SpaceBattle(std::vector<std::shared_ptr<ImperialUnit>> imperials,
-                         std::vector<std::shared_ptr<RebelStarship>> rebels, Time t0, Time t1) : imperials(std::move(imperials)),
-                                                                                                 rebels(std::move(rebels)),
-                                                                                                 timeStrategy(std::make_shared<OurTimeStrategy>(t0, t1)),
-                                                                                                 attackStrategy(std::make_shared<OurAttackStrategy>()) {}
+SpaceBattle::SpaceBattle(const std::vector<std::shared_ptr<ImperialUnit>> &imperials,
+                         const std::vector<std::shared_ptr<RebelStarship>> &rebels,
+                         Time t0, Time t1) : imperials(imperials),
+                                             rebels(rebels),
+                                             timeStrategy(std::make_shared<DefaultTimeStrategy>(t0, t1)),
+                                             attackStrategy(std::make_shared<DefaultAttackStrategy>()) {}
 
 SpaceBattle SpaceBattle::Builder::build() {
     return SpaceBattle(imperials, rebels, t0, t1);
@@ -45,7 +43,7 @@ size_t SpaceBattle::countImperialFleet() {
 }
 
 size_t SpaceBattle::countRebelFleet() {
-    size_t size= 0;
+    size_t size = 0;
     for (auto &ship : rebels) {
         size += ship->getAliveCount();
     }
@@ -73,17 +71,19 @@ void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarsh
     rebel->causeDamage(imperial);
 }
 
-OurTimeStrategy::OurTimeStrategy(Time startTime, Time maxTime) : time(startTime), maxTime(maxTime) {}
+DefaultTimeStrategy::DefaultTimeStrategy(Time startTime, Time maxTime) : time(startTime), maxTime(maxTime) {}
 
-bool OurTimeStrategy::moveTime(Time timeStep) {
+bool DefaultTimeStrategy::moveTime(Time timeStep) {
 
     bool isTimeToAttack = (this->time % 2 == 0 || this->time % 3 == 0) && this->time % 5 != 0;
     time = (time + timeStep) % (maxTime + 1);
     return isTimeToAttack;
 }
 
-void OurAttackStrategy::imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
-                                       std::vector<std::shared_ptr<RebelStarship>> &rebels) {
+DefaultAttackStrategy::DefaultAttackStrategy() = default;
+
+void DefaultAttackStrategy::imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
+                                           std::vector<std::shared_ptr<RebelStarship>> &rebels) {
 
     for (auto &imperial : imperials) {
         for (auto &rebel : rebels) {
@@ -93,5 +93,3 @@ void OurAttackStrategy::imperialAttack(std::vector<std::shared_ptr<ImperialUnit>
         }
     }
 }
-
-OurAttackStrategy::OurAttackStrategy() = default;

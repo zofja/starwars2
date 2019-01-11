@@ -1,5 +1,5 @@
-#ifndef STARWARS2_IMPERIALFLEET_H
-#define STARWARS2_IMPERIALFLEET_H
+#ifndef IMPERIALFLEET_H
+#define IMPERIALFLEET_H
 
 #include <initializer_list>
 #include <memory>
@@ -12,6 +12,8 @@ class ImperialStarship : public BasicShip, public ArmedShip, public ImperialUnit
 protected:
 
     ImperialStarship(ShieldPoints shield, AttackPower attack);
+
+    virtual ~ImperialStarship() = default;
 };
 
 class DeathStar : public ImperialStarship {
@@ -19,6 +21,8 @@ class DeathStar : public ImperialStarship {
 public:
 
     DeathStar(ShieldPoints shield, AttackPower attack);
+
+    ~DeathStar() = default;
 };
 
 class ImperialDestroyer : public ImperialStarship {
@@ -26,6 +30,8 @@ class ImperialDestroyer : public ImperialStarship {
 public:
 
     ImperialDestroyer(ShieldPoints shield, AttackPower attack);
+
+    ~ImperialDestroyer() = default;
 };
 
 class TIEFighter : public ImperialStarship {
@@ -33,6 +39,8 @@ class TIEFighter : public ImperialStarship {
 public:
 
     TIEFighter(ShieldPoints shield, AttackPower attack);
+
+    ~TIEFighter() = default;
 };
 
 
@@ -44,9 +52,11 @@ private:
 
 public:
 
-    Squadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships);
+    Squadron(const std::initializer_list<std::shared_ptr<ImperialUnit>> ships);
 
-    explicit Squadron(std::vector<std::shared_ptr<ImperialUnit>> ships);
+    explicit Squadron(const std::vector<std::shared_ptr<ImperialUnit>> &ships);
+
+    ~Squadron() = default;
 
     ShieldPoints getShield() override;
 
@@ -69,4 +79,4 @@ std::shared_ptr<Squadron> createSquadron(std::initializer_list<std::shared_ptr<I
 
 std::shared_ptr<Squadron> createSquadron(std::vector<std::shared_ptr<ImperialUnit>> ships);
 
-#endif //STARWARS2_IMPERIALFLEET_H
+#endif
