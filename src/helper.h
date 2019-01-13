@@ -27,7 +27,6 @@ public:
     virtual size_t getAliveCount() = 0;
 
     virtual ~ShipUnit() = default;
-
 };
 
 class BasicShip : public virtual ShipUnit {
@@ -72,6 +71,7 @@ protected:
     explicit ArmedShip(AttackPower attack);
 };
 
-class ImperialUnit : public virtual ArmedShipUnit {};
+class ImperialUnit : public virtual ArmedShipUnit {
+};
 
 #endif

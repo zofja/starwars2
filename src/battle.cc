@@ -99,7 +99,8 @@ bool DefaultTimeStrategy::checkTime() {
     return (this->time % 2 == 0 || this->time % 3 == 0) && this->time % 5 != 0;
 }
 
-void DefaultAttackStrategy::attack(const std::shared_ptr<ImperialUnit> &imperial, const std::shared_ptr<RebelStarship> &rebel) {
+void DefaultAttackStrategy::attack(const std::shared_ptr<ImperialUnit> &imperial,
+                                   const std::shared_ptr<RebelStarship> &rebel) {
     rebel->takeDamage(imperial->getAttackPower());
     rebel->causeDamage(imperial);
 }

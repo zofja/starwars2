@@ -29,7 +29,8 @@ void Explorer::causeDamage(const std::shared_ptr<ShipUnit> &imperial) {
     imperial->takeDamage(0);
 }
 
-StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed, attack) {
+StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed,
+                                                                                                    attack) {
     assert(LO_SLOW <= speed && speed <= HI_SLOW);
 }
 
