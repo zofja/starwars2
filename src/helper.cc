@@ -1,6 +1,9 @@
+#include <assert.h>
 #include "helper.h"
 
-BasicShip::BasicShip(ShieldPoints shield) : shield(shield) {}
+BasicShip::BasicShip(ShieldPoints shield) : shield(shield) {
+    assert(shield >= 0);
+}
 
 ShieldPoints BasicShip::getShield() {
     return this->shield;
@@ -14,7 +17,9 @@ size_t BasicShip::getAliveCount() {
     return this->shield == 0 ? 0 : 1;
 }
 
-ArmedShip::ArmedShip(AttackPower attack) : attack(attack) {}
+ArmedShip::ArmedShip(AttackPower attack) : attack(attack) {
+    assert(attack >= 0);
+}
 
 AttackPower ArmedShip::getAttackPower() {
     return (this->getAliveCount() == 0) ? 0 : this->attack;
