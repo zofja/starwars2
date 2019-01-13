@@ -22,5 +22,5 @@ ArmedShip::ArmedShip(AttackPower attack) : attack(attack) {
 }
 
 AttackPower ArmedShip::getAttackPower() {
-    return (this->getAliveCount() == 0) ? 0 : this->attack;
+    return this->attack;
 }

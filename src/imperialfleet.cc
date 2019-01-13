@@ -26,7 +26,8 @@ AttackPower Squadron::getAttackPower() {
 
     AttackPower cumulativeAttack = 0;
     for (auto &ship : this->ships) {
-        cumulativeAttack += ship->getAttackPower();
+        if (ship->getAliveCount() != 0)
+            cumulativeAttack += ship->getAttackPower();
     }
     return cumulativeAttack;
 }
