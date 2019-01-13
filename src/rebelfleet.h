@@ -6,10 +6,6 @@
 
 class RebelStarship : public BasicShip {
 
-protected:
-
-    Speed speed; //represents value of ship's speed
-
 public:
 
     Speed getSpeed();
@@ -20,6 +16,8 @@ public:
     virtual void causeDamage(const std::shared_ptr<ShipUnit> &imperial) = 0;
 
 protected:
+
+    Speed speed; //represents value of ship's speed
 
     RebelStarship(ShieldPoints shield, Speed speed);
 };
@@ -59,6 +57,9 @@ public:
     XWing(ShieldPoints shield, Speed speed, AttackPower attack);
 };
 
+/*
+ * Funkcje fabrykujące
+ */
 std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield, Speed speed);
 
 std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield, Speed speed, AttackPower attack);

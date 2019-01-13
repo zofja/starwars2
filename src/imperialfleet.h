@@ -38,10 +38,6 @@ public:
 
 class Squadron : public ImperialUnit {
 
-private:
-
-    std::vector<std::shared_ptr<ImperialUnit>> ships;
-
 public:
 
     Squadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships);
@@ -55,10 +51,15 @@ public:
     void takeDamage(AttackPower damage) override;
 
     size_t getAliveCount() override;
+
+private:
+
+    std::vector<std::shared_ptr<ImperialUnit>> ships;
 };
 
-
-// funkcje fabrykujące
+/*
+ * Funkcje fabrykujące
+ */
 std::shared_ptr<ImperialUnit> createDeathStar(ShieldPoints shield, AttackPower attack);
 
 std::shared_ptr<ImperialUnit> createImperialDestroyer(ShieldPoints shield, AttackPower attack);

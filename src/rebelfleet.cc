@@ -1,7 +1,7 @@
 #include <cassert>
 #include "rebelfleet.h"
 
-namespace util {
+namespace {
     const Speed LO_SLOW = 99999;
     const Speed HI_SLOW = 299795;
     const Speed LO_FAST = 299796;
@@ -22,7 +22,7 @@ void ArmedRebelStarship::causeDamage(const std::shared_ptr<ShipUnit> &imperial) 
 }
 
 Explorer::Explorer(ShieldPoints shield, Speed speed) : RebelStarship(shield, speed) {
-    assert(util::LO_FAST <= speed && speed <= util::HI_FAST);
+    assert(LO_FAST <= speed && speed <= HI_FAST);
 }
 
 void Explorer::causeDamage(const std::shared_ptr<ShipUnit> &imperial) {
@@ -30,11 +30,11 @@ void Explorer::causeDamage(const std::shared_ptr<ShipUnit> &imperial) {
 }
 
 StarCruiser::StarCruiser(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed, attack) {
-    assert(util::LO_SLOW <= speed && speed <= util::HI_SLOW);
+    assert(LO_SLOW <= speed && speed <= HI_SLOW);
 }
 
 XWing::XWing(ShieldPoints shield, Speed speed, AttackPower attack) : ArmedRebelStarship(shield, speed, attack) {
-    assert(util::LO_FAST <= speed && speed <= util::HI_FAST);
+    assert(LO_FAST <= speed && speed <= HI_FAST);
 }
 
 std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield, Speed speed) {

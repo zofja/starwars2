@@ -86,11 +86,6 @@ void SpaceBattle::tick(Time timeStep) {
     }
 }
 
-void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarship> &rebel) {
-    rebel->takeDamage(imperial->getAttackPower());
-    rebel->causeDamage(imperial);
-}
-
 DefaultTimeStrategy::DefaultTimeStrategy(Time startTime, Time maxTime) : time(startTime), maxTime(maxTime) {
     assert(time >= 0);
     assert(time <= maxTime);
@@ -104,10 +99,13 @@ bool DefaultTimeStrategy::checkTime() {
     return (this->time % 2 == 0 || this->time % 3 == 0) && this->time % 5 != 0;
 }
 
-DefaultAttackStrategy::DefaultAttackStrategy() = default;
+void DefaultAttackStrategy::attack(const std::shared_ptr<ImperialUnit> &imperial, const std::shared_ptr<RebelStarship> &rebel) {
+    rebel->takeDamage(imperial->getAttackPower());
+    rebel->causeDamage(imperial);
+}
 
-void DefaultAttackStrategy::imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
-                                           std::vector<std::shared_ptr<RebelStarship>> &rebels) {
+void DefaultAttackStrategy::imperialAttack(const std::vector<std::shared_ptr<ImperialUnit>> &imperials,
+                                           const std::vector<std::shared_ptr<RebelStarship>> &rebels) {
     for (auto &imperial : imperials) {
         for (auto &rebel : rebels) {
             if (imperial->getAliveCount() != 0 && rebel->getAliveCount() != 0) {

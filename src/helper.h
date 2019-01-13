@@ -26,18 +26,11 @@ public:
      */
     virtual size_t getAliveCount() = 0;
 
-protected:
-
-    ShipUnit() = default;
-
     virtual ~ShipUnit() = default;
+
 };
 
 class BasicShip : public virtual ShipUnit {
-
-protected:
-
-    ShieldPoints shield; //represents value of ship's shield
 
 public:
 
@@ -48,6 +41,8 @@ public:
     size_t getAliveCount() override;
 
 protected:
+
+    ShieldPoints shield; //represents value of ship's shield
 
     explicit BasicShip(ShieldPoints shield);
 };
@@ -62,16 +57,9 @@ public:
      */
     virtual AttackPower getAttackPower() = 0;
 
-protected:
-
-    ArmedShipUnit() = default;
 };
 
 class ArmedShip : public virtual ArmedShipUnit {
-
-protected:
-
-    AttackPower attack; //represents value of ship's attack power
 
 public:
 
@@ -79,15 +67,11 @@ public:
 
 protected:
 
+    AttackPower attack; //represents value of ship's attack power
+
     explicit ArmedShip(AttackPower attack);
-
 };
 
-class ImperialUnit : public virtual ArmedShipUnit {
-
-protected:
-
-    ImperialUnit() = default;
-};
+class ImperialUnit : public virtual ArmedShipUnit {};
 
 #endif

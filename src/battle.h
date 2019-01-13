@@ -21,10 +21,6 @@ public:
      */
     virtual bool checkTime() = 0;
 
-protected:
-
-    TimeStrategy() = default;
-
     virtual ~TimeStrategy() = default;
 };
 
@@ -51,33 +47,34 @@ public:
     /*
      * Performs a single attack of imperial fleet on the rebel fleet.
      */
-    virtual void imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
-                                std::vector<std::shared_ptr<RebelStarship>> &rebels) = 0;
-
-protected:
-
-    AttackStrategy() = default;
+    virtual void imperialAttack(const std::vector<std::shared_ptr<ImperialUnit>> &imperials,
+                                const std::vector<std::shared_ptr<RebelStarship>> &rebels) = 0;
 
     virtual ~AttackStrategy() = default;
+
+private:
+
+    virtual void attack(const std::shared_ptr<ImperialUnit> &imperial, const std::shared_ptr<RebelStarship> &rebel) = 0;
 };
 
 class DefaultAttackStrategy : public virtual AttackStrategy {
 
 public:
-    DefaultAttackStrategy();
+    DefaultAttackStrategy() = default;
 
-    void imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
-                        std::vector<std::shared_ptr<RebelStarship>> &rebels) override;
-};
-
-class SpaceBattle {
+    void imperialAttack(const std::vector<std::shared_ptr<ImperialUnit>> &imperials,
+                        const std::vector<std::shared_ptr<RebelStarship>> &rebels) override;
 
 private:
 
-    std::vector<std::shared_ptr<ImperialUnit>> imperials; // imperial ships involved in the battle
-    std::vector<std::shared_ptr<RebelStarship>> rebels; // rebel ships involved in the battle
-    std::shared_ptr<TimeStrategy> timeStrategy; // strategy used to manage time
-    std::shared_ptr<AttackStrategy> attackStrategy; // strategy used to manage attacks
+    /*
+     * Performs an attack of an imperial ship on a rebel ship.
+    */
+    void attack(const std::shared_ptr<ImperialUnit> &imperial, const std::shared_ptr<RebelStarship> &rebel) override;
+
+};
+
+class SpaceBattle {
 
 public:
 
@@ -103,13 +100,6 @@ public:
 
     class Builder {
 
-    private:
-
-        std::vector<std::shared_ptr<ImperialUnit>> imperials;
-        std::vector<std::shared_ptr<RebelStarship>> rebels;
-        Time t0;
-        Time t1;
-
     public:
 
         Builder() = default;
@@ -123,12 +113,22 @@ public:
         Builder &maxTime(Time t);
 
         SpaceBattle build();
-    };
-};
 
-/*
- * Performs an attack of an imperial ship on a rebel ship.
- */
-void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarship> &rebel);
+    private:
+
+        std::vector<std::shared_ptr<ImperialUnit>> imperials;
+        std::vector<std::shared_ptr<RebelStarship>> rebels;
+        Time t0;
+        Time t1;
+    };
+
+private:
+
+    std::vector<std::shared_ptr<ImperialUnit>> imperials; // imperial ships involved in the battle
+    std::vector<std::shared_ptr<RebelStarship>> rebels; // rebel ships involved in the battle
+    std::shared_ptr<TimeStrategy> timeStrategy; // strategy used to manage time
+    std::shared_ptr<AttackStrategy> attackStrategy; // strategy used to manage attacks
+
+};
 
 #endif

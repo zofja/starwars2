@@ -1,4 +1,4 @@
-#include <assert.h>
+#include <cassert>
 #include "helper.h"
 
 BasicShip::BasicShip(ShieldPoints shield) : shield(shield) {
