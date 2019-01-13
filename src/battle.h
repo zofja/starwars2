@@ -11,7 +11,8 @@ class TimeStrategy {
 
 public:
 
-    virtual bool moveTime(Time timeStep) = 0;
+    virtual void changeTime(Time timeStep) = 0;
+    virtual bool checkTime() = 0;
 
 protected:
 
@@ -26,7 +27,9 @@ public:
 
     DefaultTimeStrategy(Time startTime, Time maxTime);
 
-    bool moveTime(Time timeStep) override;
+    void changeTime(Time timeStep) override;
+
+    bool checkTime() override;
 
 private:
 

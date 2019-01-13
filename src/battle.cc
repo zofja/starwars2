@@ -59,9 +59,9 @@ void SpaceBattle::tick(Time timeStep) {
     } else if (countImperialFleet() == 0) {
         std::cout << "REBELLION WON\n";
     } else {
-        if (timeStrategy->moveTime(timeStep)) {
+        if (timeStrategy->checkTime())
             attackStrategy->imperialAttack(this->imperials, this->rebels);
-        }
+        timeStrategy->changeTime(timeStep);
     }
 }
 
@@ -73,11 +73,12 @@ void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarsh
 
 DefaultTimeStrategy::DefaultTimeStrategy(Time startTime, Time maxTime) : time(startTime), maxTime(maxTime) {}
 
-bool DefaultTimeStrategy::moveTime(Time timeStep) {
+void DefaultTimeStrategy::changeTime(Time timeStep) {
+    this->time = (this->time + timeStep) % (this->maxTime + 1);
+}
 
-    bool isTimeToAttack = (this->time % 2 == 0 || this->time % 3 == 0) && this->time % 5 != 0;
-    time = (time + timeStep) % (maxTime + 1);
-    return isTimeToAttack;
+bool DefaultTimeStrategy::checkTime() {
+    return (this->time % 2 == 0 || this->time % 3 == 0) && this->time % 5 != 0;
 }
 
 DefaultAttackStrategy::DefaultAttackStrategy() = default;
