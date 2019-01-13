@@ -280,8 +280,6 @@ int main() {
         assert(squadron2->getShield() == 116);
         assert(squadron2->getAttackPower() == 95);
 
-
-
         std::cout << "test 202 passed" << std::endl;
     }
 #endif
