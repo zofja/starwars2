@@ -11,7 +11,14 @@ class TimeStrategy {
 
 public:
 
+    /*
+     * Move the current time by timeStep.
+     */
     virtual void changeTime(Time timeStep) = 0;
+
+    /*
+     * Checks if it's time to attack.
+     */
     virtual bool checkTime() = 0;
 
 protected:
@@ -23,6 +30,11 @@ protected:
 
 class DefaultTimeStrategy : public virtual TimeStrategy {
 
+private:
+
+    Time time; // represents current time
+    Time maxTime; //represents the maximum value of time(after surpassing this value time goes back to 0)
+
 public:
 
     DefaultTimeStrategy(Time startTime, Time maxTime);
@@ -30,18 +42,15 @@ public:
     void changeTime(Time timeStep) override;
 
     bool checkTime() override;
-
-private:
-
-    Time time;
-    Time maxTime;
-
 };
 
 class AttackStrategy {
 
 public:
 
+    /*
+     * Performs a single attack of imperial fleet on the rebel fleet.
+     */
     virtual void imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
                                 std::vector<std::shared_ptr<RebelStarship>> &rebels) = 0;
 
@@ -63,23 +72,47 @@ public:
 
 class SpaceBattle {
 
+private:
+
+    std::vector<std::shared_ptr<ImperialUnit>> imperials; // imperial ships involved in the battle
+    std::vector<std::shared_ptr<RebelStarship>> rebels; // rebel ships involved in the battle
+    std::shared_ptr<TimeStrategy> timeStrategy; // strategy used to manage time
+    std::shared_ptr<AttackStrategy> attackStrategy; // strategy used to manage attacks
+
 public:
 
     SpaceBattle(const std::vector<std::shared_ptr<ImperialUnit>> &imperials,
                 const std::vector<std::shared_ptr<RebelStarship>> &rebels,
                 Time t0, Time t1);
 
+    /*
+     * Returns the number of imperial ships that are currently not destroyed.
+     */
     size_t countImperialFleet();
 
+    /*
+     * Returns the number of rebel ships that are currently not destroyed.
+     */
     size_t countRebelFleet();
 
+    /*
+     * Checks current time, if it's time for attacking performs the attack.
+     * After that moves time by timeStep.
+     */
     void tick(Time timeStep);
 
     class Builder {
 
+    private:
+
+        std::vector<std::shared_ptr<ImperialUnit>> imperials;
+        std::vector<std::shared_ptr<RebelStarship>> rebels;
+        Time t0;
+        Time t1;
+
     public:
 
-        Builder();
+        Builder() = default;
 
         Builder &ship(const std::shared_ptr<ImperialUnit> &imperial);
 
@@ -90,26 +123,12 @@ public:
         Builder &maxTime(Time t);
 
         SpaceBattle build();
-
-
-    private:
-
-        std::vector<std::shared_ptr<ImperialUnit>> imperials;
-        std::vector<std::shared_ptr<RebelStarship>> rebels;
-        Time t0;
-        Time t1;
-
     };
-
-private:
-
-    std::vector<std::shared_ptr<ImperialUnit>> imperials;
-    std::vector<std::shared_ptr<RebelStarship>> rebels;
-    std::shared_ptr<TimeStrategy> timeStrategy;
-    std::shared_ptr<AttackStrategy> attackStrategy;
-
 };
 
+/*
+ * Performs an attack of an imperial ship on a rebel ship.
+ */
 void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarship> &rebel);
 
 #endif

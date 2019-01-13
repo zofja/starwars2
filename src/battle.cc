@@ -1,7 +1,6 @@
 #include <iostream>
+#include <cassert>
 #include "battle.h"
-
-SpaceBattle::Builder::Builder() = default;
 
 SpaceBattle::Builder &SpaceBattle::Builder::ship(const std::shared_ptr<ImperialUnit> &imperial) {
     imperials.emplace_back(imperial);
@@ -71,7 +70,10 @@ void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarsh
     rebel->causeDamage(imperial);
 }
 
-DefaultTimeStrategy::DefaultTimeStrategy(Time startTime, Time maxTime) : time(startTime), maxTime(maxTime) {}
+DefaultTimeStrategy::DefaultTimeStrategy(Time startTime, Time maxTime) : time(startTime), maxTime(maxTime) {
+    assert(time >= 0);
+    assert(time <= maxTime);
+}
 
 void DefaultTimeStrategy::changeTime(Time timeStep) {
     this->time = (this->time + timeStep) % (this->maxTime + 1);

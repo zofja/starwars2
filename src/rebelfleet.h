@@ -8,13 +8,16 @@ class RebelStarship : public BasicShip {
 
 protected:
 
-    Speed speed;
+    Speed speed; //represents value of ship's speed
 
 public:
 
     Speed getSpeed();
 
-    virtual void causeDamage(const std::shared_ptr<Ship> &imperial) = 0;
+    /*
+     * If the ship is armed function inflicts damage(equal to the attack power of the ship) on the imperial ship.
+     */
+    virtual void causeDamage(const std::shared_ptr<ShipUnit> &imperial) = 0;
 
 protected:
 
@@ -27,7 +30,7 @@ class ArmedRebelStarship : public RebelStarship, public ArmedShip {
 
 public:
 
-    void causeDamage(const std::shared_ptr<Ship> &imperial) override;
+    void causeDamage(const std::shared_ptr<ShipUnit> &imperial) override;
 
 protected:
 
@@ -41,7 +44,7 @@ class Explorer : public RebelStarship {
 
 public:
 
-    void causeDamage(const std::shared_ptr<Ship> &imperial) override;
+    void causeDamage(const std::shared_ptr<ShipUnit> &imperial) override;
 
     Explorer(ShieldPoints shield, Speed speed);
 

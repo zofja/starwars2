@@ -15,7 +15,7 @@ Speed RebelStarship::getSpeed() {
 ArmedRebelStarship::ArmedRebelStarship(ShieldPoints shield, Speed speed, AttackPower attack) : RebelStarship(shield, speed),
                                                                                                ArmedShip(attack) {}
 
-void ArmedRebelStarship::causeDamage(const std::shared_ptr<Ship> &imperial) {
+void ArmedRebelStarship::causeDamage(const std::shared_ptr<ShipUnit> &imperial) {
     imperial->takeDamage(this->getAttackPower());
 }
 
@@ -23,7 +23,7 @@ Explorer::Explorer(ShieldPoints shield, Speed speed) : RebelStarship(shield, spe
     assert(LO_FAST <= speed && speed <= HI_FAST);
 }
 
-void Explorer::causeDamage(const std::shared_ptr<Ship> &imperial) {
+void Explorer::causeDamage(const std::shared_ptr<ShipUnit> &imperial) {
     imperial->takeDamage(0);
 }
 

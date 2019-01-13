@@ -7,28 +7,37 @@ typedef int ShieldPoints;
 typedef int Speed;
 typedef int AttackPower;
 
-class Ship {
+class ShipUnit {
 
 public:
 
+    /*
+     * Returns the current value of ship's shield.
+     */
     virtual ShieldPoints getShield() = 0;
 
+    /*
+     * Lowers ship's shield by the damage received or sets it to 0 if damage is greater that shield.
+     */
     virtual void takeDamage(AttackPower damage) = 0;
 
+    /*
+     * Returns number of ships alive in this unit.
+     */
     virtual size_t getAliveCount() = 0;
 
 protected:
 
-    Ship() = default;
+    ShipUnit() = default;
 
-    virtual ~Ship() = default;
+    virtual ~ShipUnit() = default;
 };
 
-class BasicShip : public virtual Ship {
+class BasicShip : public virtual ShipUnit {
 
 protected:
 
-    ShieldPoints shield;
+    ShieldPoints shield; //represents value of ship's shield
 
 public:
 
@@ -46,10 +55,13 @@ protected:
 };
 
 
-class ArmedShipUnit : public virtual Ship {
+class ArmedShipUnit : public virtual ShipUnit {
 
 public:
 
+    /*
+     * Returns the values of ship's attack power.
+     */
     virtual AttackPower getAttackPower() = 0;
 
 protected:
@@ -63,7 +75,7 @@ class ArmedShip : public virtual ArmedShipUnit {
 
 protected:
 
-    AttackPower attack;
+    AttackPower attack; //represents value of ship's attack power
 
 public:
 
