@@ -2,6 +2,27 @@
 #include <cassert>
 #include "battle.h"
 
+/*
+It is a dark time for the
+Rebellion. Although the DeathStar
+has been destroyed, ImperialStarships
+have driven the Rebel forces
+from their hidden base and pursued
+them across the galaxy.
+Evading the dreaded Imperial
+SoloStarships and Squadrons,
+a group of freedom fighters
+led by Luke Skywalker has
+established a new secret
+base on the remote ice world
+of Hoth.
+The evil lord Darth Vader,
+obsessed with finding young
+Skywalker, has dispatched
+thousands of remote probes into
+the far reaches of space....
+*/
+
 SpaceBattle::Builder &SpaceBattle::Builder::ship(const std::shared_ptr<ImperialUnit> &imperial) {
     imperials.emplace_back(imperial);
     return *this;
