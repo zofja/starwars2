@@ -12,7 +12,7 @@ class TimeStrategy {
 public:
 
     /*
-     * Move the current time by timeStep.
+     * Moves the current time by timeStep.
      */
     virtual void changeTime(Time timeStep) = 0;
 

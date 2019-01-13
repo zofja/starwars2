@@ -50,7 +50,6 @@ size_t SpaceBattle::countRebelFleet() {
 }
 
 void SpaceBattle::tick(Time timeStep) {
-
     if (countImperialFleet() == 0 && countRebelFleet() == 0) {
         std::cout << "DRAW\n";
     } else if (countRebelFleet() == 0) {
@@ -65,7 +64,6 @@ void SpaceBattle::tick(Time timeStep) {
 }
 
 void attack(std::shared_ptr<ImperialUnit> &imperial, std::shared_ptr<RebelStarship> &rebel) {
-
     rebel->takeDamage(imperial->getAttackPower());
     rebel->causeDamage(imperial);
 }
@@ -87,7 +85,6 @@ DefaultAttackStrategy::DefaultAttackStrategy() = default;
 
 void DefaultAttackStrategy::imperialAttack(std::vector<std::shared_ptr<ImperialUnit>> &imperials,
                                            std::vector<std::shared_ptr<RebelStarship>> &rebels) {
-
     for (auto &imperial : imperials) {
         for (auto &rebel : rebels) {
             if (imperial->getAliveCount() != 0 && rebel->getAliveCount() != 0) {

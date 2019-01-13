@@ -12,8 +12,6 @@ class ImperialStarship : public BasicShip, public ArmedShip, public ImperialUnit
 protected:
 
     ImperialStarship(ShieldPoints shield, AttackPower attack);
-
-    virtual ~ImperialStarship() = default;
 };
 
 class DeathStar : public ImperialStarship {
@@ -21,8 +19,6 @@ class DeathStar : public ImperialStarship {
 public:
 
     DeathStar(ShieldPoints shield, AttackPower attack);
-
-    ~DeathStar() = default;
 };
 
 class ImperialDestroyer : public ImperialStarship {
@@ -30,8 +26,6 @@ class ImperialDestroyer : public ImperialStarship {
 public:
 
     ImperialDestroyer(ShieldPoints shield, AttackPower attack);
-
-    ~ImperialDestroyer() = default;
 };
 
 class TIEFighter : public ImperialStarship {
@@ -39,8 +33,6 @@ class TIEFighter : public ImperialStarship {
 public:
 
     TIEFighter(ShieldPoints shield, AttackPower attack);
-
-    ~TIEFighter() = default;
 };
 
 
@@ -52,11 +44,9 @@ private:
 
 public:
 
-    Squadron(const std::initializer_list<std::shared_ptr<ImperialUnit>> ships);
+    Squadron(std::initializer_list<std::shared_ptr<ImperialUnit>> ships);
 
     explicit Squadron(const std::vector<std::shared_ptr<ImperialUnit>> &ships);
-
-    ~Squadron() = default;
 
     ShieldPoints getShield() override;
 

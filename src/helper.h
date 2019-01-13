@@ -3,9 +3,9 @@
 
 #include <memory>
 
-typedef int ShieldPoints;
-typedef int Speed;
-typedef int AttackPower;
+typedef int32_t ShieldPoints;
+typedef int32_t Speed;
+typedef int32_t AttackPower;
 
 class ShipUnit {
 
@@ -50,8 +50,6 @@ public:
 protected:
 
     explicit BasicShip(ShieldPoints shield);
-
-    virtual ~BasicShip() = default;
 };
 
 
@@ -60,15 +58,13 @@ class ArmedShipUnit : public virtual ShipUnit {
 public:
 
     /*
-     * Returns the values of ship's attack power.
+     * Returns the value of ship's attack power.
      */
     virtual AttackPower getAttackPower() = 0;
 
 protected:
 
     ArmedShipUnit() = default;
-
-    virtual ~ArmedShipUnit() = default;
 };
 
 class ArmedShip : public virtual ArmedShipUnit {
@@ -85,8 +81,6 @@ protected:
 
     explicit ArmedShip(AttackPower attack);
 
-    virtual ~ArmedShip() = default;
-
 };
 
 class ImperialUnit : public virtual ArmedShipUnit {
@@ -94,8 +88,6 @@ class ImperialUnit : public virtual ArmedShipUnit {
 protected:
 
     ImperialUnit() = default;
-
-    virtual ~ImperialUnit() = default;
 };
 
 #endif

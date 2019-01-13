@@ -8,13 +8,11 @@ ImperialDestroyer::ImperialDestroyer(ShieldPoints shield, AttackPower attack) : 
 
 TIEFighter::TIEFighter(ShieldPoints shield, AttackPower attack) : ImperialStarship(shield, attack) {}
 
-Squadron::Squadron(const std::initializer_list<std::shared_ptr<ImperialUnit>> ships) : Squadron(
-        std::vector<std::shared_ptr<ImperialUnit>>(ships.begin(), ships.end())) {}
+Squadron::Squadron(const std::initializer_list<std::shared_ptr<ImperialUnit>> ships) : ships(ships) {}
 
 Squadron::Squadron(const std::vector<std::shared_ptr<ImperialUnit>> &ships) : ships(ships) {}
 
 ShieldPoints Squadron::getShield() {
-
     ShieldPoints cumulativeShield = 0;
     for (auto &ship : this->ships) {
         cumulativeShield += ship->getShield();
@@ -23,7 +21,6 @@ ShieldPoints Squadron::getShield() {
 }
 
 AttackPower Squadron::getAttackPower() {
-
     AttackPower cumulativeAttack = 0;
     for (auto &ship : this->ships) {
         if (ship->getAliveCount() != 0)
@@ -33,14 +30,12 @@ AttackPower Squadron::getAttackPower() {
 }
 
 void Squadron::takeDamage(AttackPower damage) {
-
     for (auto &s : this->ships) {
         s->takeDamage(damage);
     }
 }
 
 size_t Squadron::getAliveCount() {
-
     size_t aliveCount = 0;
     for (auto &ship : this->ships) {
         aliveCount += ship->getAliveCount();
