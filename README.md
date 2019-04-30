@@ -59,7 +59,7 @@ Squadron ma metody publiczne:
 Dodatkowo powinny istnieć funkcje fabrykujące dla `DeathStar`, `ImperialDestroyer`,
 `TIEFighter` i Squadron z sygnaturami pasującymi do przykładu.
 
-### Plik `battle.h` oraz `battle.cc`
+### `battle.h` oraz `battle.cc`
 
 Klasa `SpaceBattle` tworzona za pomocą klasy `Builder`, dla której można ustawić co
 najmniej:
