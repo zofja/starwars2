@@ -1,18 +1,4 @@
-# Star Wars 2
-
-Na fali sukcesu Star Wars postanowiono wyprodukować sequel Star Wars 2.
-
-Znowu musisz stworzyć program, który symuluje bitwy gwiezdne.
-Jednak tym razem masz użyć innego paradygmatu do realizacji swojego programu.
-
-Celem zadania jest stworzenie programu symulującego bitwy gwiezdne. Bitwa
-rozgrywa się w przestrzeni międzygwiezdnej pomiędzy siłami Rebelii a Imperium.
-Ponieważ chcemy symulować różne bitwy, należy przygotować rozwiązanie ogólne.
-
-Stwórz klasy opisane poniżej oraz odpowiednie klasy pomocnicze, które ułatwią
-implementację oraz umożliwią łatwą rozbudowę programu.
-
-### Plik `rebelfleet.h` oraz `rebelfleet.cc`
+### `rebelfleet.h` oraz `rebelfleet.cc`
 
 Klasy `Explorer`, `StarCruiser` i `XWing`, w których używane są typy pomocnicze:
 * `ShieldPoints` będący typem przechowującym wytrzymałość tarczy,
@@ -22,8 +8,7 @@ Klasy `Explorer`, `StarCruiser` i `XWing`, w których używane są typy pomocnic
 Klasa `Explorer` przyjmuje w konstruktorze parametry `shield` typu `ShieldPoints` oraz
 `speed` typu `Speed`, a `StarCruiser` oraz `XWing` dodatkowo parametr `power` typu `AttackPower`.
 Klasa `StarCruiser` może przyjmować `speed` w zakresie od `99999` do `299795` włącznie,
-a klasy `Explorer` oraz `XWing` w zakresie od `299796` do `2997960` włącznie. Poprawność
-wartości parametru speed należy sprawdzać za pomocą asercji.
+a klasy `Explorer` oraz `XWing` w zakresie od `299796` do `2997960` włącznie.
 
 Klasy `Explorer`, `StarCruiser` i `XWing` udostępniają metody publiczne:
 * `ShieldPoints getShield()` – zwraca wytrzymałość tarczy,
@@ -40,7 +25,7 @@ Klasy `Explorer`, `StarCruiser` i `XWing` powinny być podklasami ogólniejszego
 Dodatkowo powinny istnieć funkcje fabrykujące dla `Explorer`, `StarCruiser` i `XWing`
 z sygnaturami pasującymi do przykładu.
 
-### Plik `imperialfleet.h` oraz `imperialfleet.cc`
+### `imperialfleet.h` oraz `imperialfleet.cc`
 
 Klasy `DeathStar`, `ImperialDestroyer` i `TIEFighter`, w których używane są typy
 pomocnicze:
@@ -118,43 +103,3 @@ Wywołanie `tick()` na bitwie, podczas gdy wszystkie statki Rebelii zostały
 zniszczone, powoduje wypisanie na standardowe wyjście napisu `"IMPERIUM WON\n"`.
 Jeśli wszystkie statki zarówno Imperium jak i Rebelii są zniszczone, to zostaje
 wypisany napis `"DRAW\n"`.
-
-### Inne wymagania
-
-Bardzo istotną częścią zadania jest zaprojektowanie odpowiedniej hierarchii
-klas. W szczególności nie wszystkie klasy, jakie są wymagane w rozwiązaniu,
-zostały jawnie wyspecyfikowane w treści zadania.
-
-Należy zaprojektować metodę lub metody ataku na ofiarę tak, aby spełnić
-wymagania funkcjonalne. Miejsce umieszczenia tej metody zależy od projektanta.
-Statek imperialny atakuje statek rebeliancki, obniżając wytrzymałość jego tarczy.
-Należy też uwzględnić specjalny przypadek, gdy atakowane są `XWing` lub `StarCruiser`
-– wtedy atak następuje w dwie strony – wytrzymałość tarczy obniżana jest zarówno
-statkowi rebelianckiemu, jak i imperialnemu.
-
-Strategia czasów ataków powinna być łatwo podmienialna na inną, zgodnie z zasadą
-_Open-Closed Principle_ z zasad SOLID.
-
-Przykład użycia znajduje się w pliku `starwars2_example.cc`.
-
-Rozwiązanie będzie kompilowane poleceniem
-
-`g++ -Wall -Wextra -O2 -std=c++17 *.cc`
-
-Rozwiązanie powinno zawierać następujące pliki nagłówkowe: `rebelfleet.h`,
-`imperialfleet.h`, `battle.h` oraz opcjonalne pliki: `imperialfleet.cc`, `rebelfleet.cc`,
-`battle.cc`, a także opcjonalne pliki pomocnicze: `helper.h` oraz `helper.cc`.
-Pliki te należy umieścić w repozytorium w katalogu
-
-grupaN/zadanie6/ab123456+cd123456
-
-lub
-
-grupaN/zadanie6/ab123456+cd123456+ef123456
-
-gdzie N jest numerem grupy, a ab123456, cd123456, ef123456 są identyfikatorami
-członków zespołu umieszczającego to rozwiązanie. Katalog z rozwiązaniem nie
-powinien zawierać innych plików, ale może zawierać podkatalog prywatne, gdzie
-można umieszczać różne pliki, np. swoje testy. Pliki umieszczone w tym
-podkatalogu nie będą oceniane. Nie wolno umieszczać w repozytorium plików
-dużych, binarnych, tymczasowych (np. *.o) ani innych zbędnych.
